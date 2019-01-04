@@ -11,17 +11,9 @@ export default class Todo extends Component {
     super(props);
     this.db = db
     this.todoList = this.db.todo;
-    this.state = {
-      activeRoute: ''
-    };
-  }
-
-  loadRoute = (route) => {
-    this.setState({ activeRoute: route });
   }
 
   render() {
-    const { activeRoute } = this.state;
     return (
       <Router>
         <Suspense fallback={<div>Loading</div>}>
@@ -29,34 +21,39 @@ export default class Todo extends Component {
             <Grid item xs={12}>
               <Grid container spacing={8}>
                 <Grid item xs={3}>
-                  <div className="button-container">
-                    <Button variant={activeRoute === '' ? "outlined" : 'text'} component={Link} to="/">LIST</Button>
-                  </div>
+                  <OutlinedLink exact={true} to="/" label="LIST" />
                 </Grid>
                 <Grid item xs={3}>
-                  <div className="button-container">
-                    <Button variant={activeRoute === 'add' ? "outlined" : 'text'} component={Link} to="add">ADD</Button>
-                  </div>
+                  <OutlinedLink exact={false} to="/add" label="ADD" />
                 </Grid>
                 <Grid item xs={3}>
-                  <div className="button-container">
-                    <Button variant="text" component={Link} to="/">TEMP</Button>
-                  </div>
+                  <OutlinedLink exact={false} to="/temp" label="TEMP" />
                 </Grid>
                 <Grid item xs={3}>
-                  <div className="button-container">
-                    <Button variant="text" component={Link} to="/">TEMP</Button>
-                  </div>
+                  <OutlinedLink exact={false} to="/temp" label="TEMP" />
                 </Grid>
               </Grid>
             </Grid>
             <Grid item xs={12}>
-              <Route exact path="/" render={props => <TodoList list={this.todoList} loaded={() => this.loadRoute('')} {...props} />} />
-              <Route path="/add" render={props => <TodoAdd loaded={() => this.loadRoute('add')} {...props} />} />
+              <Route exact path="/" render={props => <TodoList list={this.todoList} {...props} />} />
+              <Route path="/add" render={props => <TodoAdd {...props} />} />
             </Grid>
           </Grid>
         </Suspense>
       </Router>
     )
   }
+}
+
+const OutlinedLink = ({ exact, to, label }) => {
+  return (
+    <div className="button-container">
+      <Route path={to}
+        exact={exact}
+        children={({ match }) => (
+          <Button variant={match ? "outlined" : 'text'} component={Link} to={to}>{label}</Button>
+        )}
+      />
+    </div>
+  )
 }

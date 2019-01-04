@@ -6,15 +6,8 @@ import '../styles/todo.scss';
 
 export default class TodoList extends Component {
   static propTypes = {
-    list: PropTypes.array,
-    loaded: PropTypes.func
+    list: PropTypes.array
   }
-
-  constructor(props) {
-    super(props);
-    this.props.loaded();
-  }
-
 
   render() {
     const { list } = this.props;
