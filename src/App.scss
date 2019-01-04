@@ -1,0 +1,27 @@
+$bgColor: #EEEEEE;
+
+body {
+  background-color: $bgColor;
+}
+
+.App {
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 5vh;
+}
+
+.button-container {
+  text-align: center;
+  > a {
+    width: 100%;
+    font-size: 1rem;
+  }
+}
+
+.primary-progress-color {
+  background-color: #9E9E9E !important;
+}
+
+.primary-progress-bar-color {
+  background-color: #212121 !important;
+}

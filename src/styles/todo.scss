@@ -1,0 +1,24 @@
+.todo-block {
+  padding: 16px;
+  min-height: 140px;
+}
+.todo-title {
+  height: 24px;
+  font-size: 1.2rem;
+}
+.todo-progress {
+  margin: 8px 0;
+  color: black;
+}
+.todo-content {
+  padding: 16px 0;
+}
+.todo-author {
+  font-size: 0.85rem;
+  color: rgba(0, 0, 0 , 0.54);
+  text-align: right;
+}
+.todo-action {
+  margin-top: 24px;
+  text-align: right;
+}
