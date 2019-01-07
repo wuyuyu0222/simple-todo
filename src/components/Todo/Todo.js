@@ -1,6 +1,6 @@
 import React, { Component, lazy } from 'react'
 import { Route, Switch } from 'react-router-dom';
-import db from '../utils/database';
+import db from '../../utils/database';
 const TodoList = lazy(() => import('./Todo-List'));
 const TodoAdd = lazy(() => import('./Todo-Add'));
 

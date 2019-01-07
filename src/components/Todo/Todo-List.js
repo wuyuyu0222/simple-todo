@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 import { Grid, Paper, Button, LinearProgress } from '@material-ui/core';
-import '../styles/todo.scss';
+import './todo.scss';
 
 export default class TodoList extends Component {
   static propTypes = {

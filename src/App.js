@@ -3,7 +3,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { CssBaseline } from '@material-ui/core';
 import './App.scss';
 import Container from './layouts/Container';
-import Todo from './components/Todo';
+import Todo from './components/Todo/Todo';
 
 class App extends Component {
   render() {

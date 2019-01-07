@@ -13,10 +13,10 @@ export default class Topbar extends Component {
           <OutlinedLink exact={false} to="/add" label="ADD" />
         </Grid>
         <Grid item xs={3}>
-          <OutlinedLink exact={false} to="/temp" label="TEMP" />
+          <OutlinedLink exact={false} to="/edit" label="EDIT" />
         </Grid>
         <Grid item xs={3}>
-          <OutlinedLink exact={false} to="/temp" label="TEMP" />
+          <OutlinedLink exact={false} to="/setting" label="SETTING" />
         </Grid>
       </Grid>
     )
