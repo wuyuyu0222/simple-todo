@@ -6,11 +6,12 @@ import './todo.scss';
 
 export default class TodoList extends Component {
   static propTypes = {
-    list: PropTypes.array
+    list: PropTypes.array,
+    deleteTodo: PropTypes.func
   }
 
   render() {
-    const { list } = this.props;
+    const { list, deleteTodo } = this.props;
     if (list.length > 0) {
       return (
         <Grid container spacing={24}>
@@ -31,7 +32,7 @@ export default class TodoList extends Component {
                   <div className="todo-author">{item.userId} at {item.modifiedAt.toLocaleDateString()}</div>
                   <div className="todo-action">
                     <Button>Edit</Button>
-                    <Button color="secondary">Delete</Button>
+                    <Button color="secondary" onClick={() => deleteTodo(item.id)}>Delete</Button>
                   </div>
                 </div>
               </Paper>
