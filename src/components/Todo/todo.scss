@@ -6,10 +6,6 @@
   height: 24px;
   font-size: 1.2rem;
 }
-.todo-progress {
-  margin: 8px 0;
-  color: black;
-}
 .todo-content {
   padding: 16px 0;
 }
@@ -18,7 +14,16 @@
   color: rgba(0, 0, 0 , 0.54);
   text-align: right;
 }
+.todo-message {
+  margin-top: 24px;
+}
 .todo-action {
   margin-top: 24px;
   text-align: right;
+  button:not(:last-child) {
+    margin-right: 8px;
+  }
+}
+.todo-form {
+  padding: 16px;
 }

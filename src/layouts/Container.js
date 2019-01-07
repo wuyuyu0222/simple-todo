@@ -5,14 +5,16 @@ export default class Container extends Component {
 
   render() {
     return (
-      <Grid container spacing={16}>
-        <Grid item xs={12}>
-          <Topbar />
+      <div className="container">
+        <Grid container spacing={16}>
+          <Grid item xs={12}>
+            <Topbar />
+          </Grid>
+          <Grid item xs={12}>
+            {this.props.children}
+          </Grid>
         </Grid>
-        <Grid item xs={12}>
-          {this.props.children}
-        </Grid>
-      </Grid>
+      </div>
     )
   }
 }
