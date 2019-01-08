@@ -1,5 +1,4 @@
 import React, { Component, Suspense } from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
 import { CssBaseline, createMuiTheme, MuiThemeProvider } from '@material-ui/core';
 import './App.scss';
 import Container from './layouts/Container';
@@ -18,15 +17,13 @@ class App extends Component {
   render() {
     return (
       <CssBaseline>
-        <Router>
-          <Suspense fallback={<div>Loading</div>}>
-            <MuiThemeProvider theme={this.theme}>
-              <Container>
-                <Todo />
-              </Container>
-            </MuiThemeProvider>
-          </Suspense>
-        </Router>
+        <Suspense fallback={<div>Loading</div>}>
+          <MuiThemeProvider theme={this.theme}>
+            <Container>
+              <Todo />
+            </Container>
+          </MuiThemeProvider>
+        </Suspense>
       </CssBaseline>
     );
   }

@@ -12,19 +12,13 @@ export default class TodoUpsert extends Component {
       loading: false,
       message: ''
     };
-    const newTodo = {
-      title: '',
-      category: '',
-      progress: 0,
-      content: '',
-      userId: 'jakeWu'
-    }
-    this.todo = this.props.todo && this.props.todo.id
-      ? cloneDeep(this.props.todo) : newTodo;
+
+    this.todo = cloneDeep(this.props.todo);
   }
 
   handleCancel = () => {
     this.reset();
+    this.props.cancelTodo();
   }
 
   handleInput = (e) => {
@@ -40,7 +34,7 @@ export default class TodoUpsert extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     const random = Math.floor(Math.random() * 100) + 1;
-    this.setState({ loading: true });
+    this.setState({ loading: true, message: '' });
     setTimeout(() => {
       if (random < 95) {
         // success
@@ -49,11 +43,11 @@ export default class TodoUpsert extends Component {
           this.todo.createAt = newDate;
         }
         this.todo.modifiedAt = newDate;
-        this.props.upsertTodo(this.todo);
         this.setState({ message: 'submit success' });
         setTimeout(() => {
+          this.props.upsertTodo(this.todo);
           this.reset();
-        }, 3000);
+        }, 1000);
       } else {
         // failed
         this.setState({ message: 'submit failed', loading: false });
@@ -86,7 +80,7 @@ export default class TodoUpsert extends Component {
 
   render() {
     return (
-      <Grid container spacing={24}>
+      <Grid container spacing={16}>
         <Grid item xs={12}>
           <Paper>
             <form className="todo-form" onSubmit={this.handleSubmit} autoComplete="off">
@@ -110,7 +104,7 @@ export default class TodoUpsert extends Component {
                 </Grid>
                 <Grid item xs={6}>
                   <div className="todo-action">
-                    <Button color="secondary" onClick={this.handleCancel} disabled={!this.state.dirty || this.state.loading}>CANCEL</Button>
+                    <Button color="secondary" onClick={this.handleCancel}>CANCEL</Button>
                     <Button variant="outlined" type="submit" disabled={!this.state.formValid || !this.state.dirty || this.state.loading}>SUBMIT</Button>
                   </div>
                 </Grid>
