@@ -11,6 +11,14 @@
 }
 .todo-title {
   font-size: 1.2rem;
+  
+  >span {
+    display: inline-block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space : nowrap;
+    max-width:240px;
+  }
   .title-category {
     font-size: 1rem;
     color: rgba(0, 0, 0 , 0.64);
