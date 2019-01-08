@@ -1,29 +1,35 @@
 .todo-block {
-  padding: 16px;
+  padding: 8px;
   min-height: 140px;
+  > div {
+    padding: 8px;
+  }
 }
 .todo-title {
-  height: 24px;
   font-size: 1.2rem;
 }
-.todo-content {
-  padding: 16px 0;
+
+.todo-progress {
+  padding-top: 0;
 }
+
 .todo-author {
   font-size: 0.85rem;
   color: rgba(0, 0, 0 , 0.54);
   text-align: right;
 }
-.todo-message {
-  margin-top: 24px;
+
+.todo-message, .todo-action {
+  margin-top: 8px;
 }
+
 .todo-action {
-  margin-top: 24px;
   text-align: right;
   button:not(:last-child) {
     margin-right: 8px;
   }
 }
+
 .todo-form {
   padding: 16px;
 }

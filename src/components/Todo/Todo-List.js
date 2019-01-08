@@ -19,7 +19,7 @@ export default class TodoList extends Component {
             <Grid item xs={12} key={item.id}>
               <Paper>
                 <div className="todo-block">
-                  <div className="todo-title">{item.title}</div>
+                  <div className="todo-title"><span>{item.title}</span></div>
                   <div className="todo-progress">
                     {(item.progress > 0 && item.progress < 100) ? item.progress + '%' : item.status}
                     <LinearProgress classes={{
