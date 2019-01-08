@@ -21,7 +21,10 @@ export default class TodoList extends Component {
             <Grid item xs={12} key={item.id}>
               <Paper>
                 <div className="todo-block">
-                  <div className="todo-title"><span>{item.title}</span></div>
+                  <div className="todo-title">
+                    <span>{item.title}</span>
+                    <span className="title-category">{item.category}</span>
+                  </div>
                   <div className="todo-progress">
                     {(item.progress > 0 && item.progress < 100) ? item.progress + '%' :
                       item.progress === 0 ? 'ready' : item.progress === 100 ? 'done' : 'unknown'}

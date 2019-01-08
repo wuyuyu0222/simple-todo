@@ -11,6 +11,11 @@
 }
 .todo-title {
   font-size: 1.2rem;
+  .title-category {
+    font-size: 1rem;
+    color: rgba(0, 0, 0 , 0.64);
+    margin-left: 16px;
+  }
 }
 
 .todo-progress {
