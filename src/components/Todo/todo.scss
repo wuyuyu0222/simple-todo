@@ -30,6 +30,18 @@
   padding-top: 0;
 }
 
+.todo-content {
+  p {
+    margin: 1px 0;
+  }
+  p:first-child {
+    margin-top: 1em;
+  }
+  p:last-child {
+    margin-bottom: 1em;
+  }
+}
+
 .todo-author {
   font-size: 0.85rem;
   color: rgba(0, 0, 0 , 0.54);
