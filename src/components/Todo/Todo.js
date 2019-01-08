@@ -17,6 +17,17 @@ export default class Todo extends Component {
     this.selectedTodo = {};
   }
 
+  searchTodo = (searchString) => {
+    const todoList = this.db.todo.filter(todo => {
+      return (
+        todo.title.includes(searchString) ||
+        todo.category.includes(searchString) ||
+        todo.content.includes(searchString)
+      )
+    });
+    this.setState({ todoList: todoList });
+  }
+
   addTodo = () => {
     const newTodo = {
       title: '',
@@ -58,7 +69,7 @@ export default class Todo extends Component {
     return (
       <Grid container spacing={24}>
         <Grid item xs={12}>
-          <TodoTopbar addTodo={this.addTodo}></TodoTopbar>
+          <TodoTopbar searchTodo={this.searchTodo} addTodo={this.addTodo}></TodoTopbar>
         </Grid>
         {this.state.upsert &&
           <Grid item xs={12}>

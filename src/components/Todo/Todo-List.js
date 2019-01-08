@@ -34,7 +34,7 @@ export default class TodoList extends Component {
                     }}
                       variant="determinate" color="primary" value={item.progress} />
                   </div>
-                  <div className="todo-content">{item.content.split('\n').map(item => <p>{item}</p>)}</div>
+                  <div className="todo-content">{item.content.split('\n').map((item, idx) => <p key={idx}>{item}</p>)}</div>
                   <div className="todo-author">{item.userId} at {item.modifiedAt.toLocaleDateString()}</div>
                   <div className="todo-action">
                     <Button disabled={this.props.upsert} onClick={() => editTodo(item.id)}>Edit</Button>

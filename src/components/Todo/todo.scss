@@ -62,3 +62,14 @@
 .todo-form {
   padding: 16px;
 }
+
+.todo-search {
+  width: 100%;
+  >div:first-child {
+    width: 100%;
+  }
+  #search-input {
+      padding: 8px 6px;
+      padding-left: 0;
+  } 
+}

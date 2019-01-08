@@ -5,7 +5,7 @@ const db = {
       id: 2,
       category: 'test',
       title: 'real todo',
-      content: `input換行轉換 \n animation\n search-func \n goto-func`,
+      content: `animation \n goto func`,
       progress: 0,
       userId: 'jakeWu',
       createAt: new Date(2018, 12, 6, 14, 30, 7),
