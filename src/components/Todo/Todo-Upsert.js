@@ -3,7 +3,7 @@ import { Grid, Paper, TextField, Button } from '@material-ui/core';
 import { cloneDeep } from 'lodash';
 import './todo.scss';
 
-export default class TodoAdd extends Component {
+export default class TodoUpsert extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -12,7 +12,15 @@ export default class TodoAdd extends Component {
       loading: false,
       message: ''
     };
-    this.todo = cloneDeep(this.props.todo);
+    const newTodo = {
+      title: '',
+      category: '',
+      progress: 0,
+      content: '',
+      userId: 'jakeWu'
+    }
+    this.todo = this.props.todo && this.props.todo.id
+      ? cloneDeep(this.props.todo) : newTodo;
   }
 
   handleCancel = () => {
@@ -37,16 +45,18 @@ export default class TodoAdd extends Component {
       if (random < 95) {
         // success
         const newDate = new Date();
-        this.todo.createAt = newDate;
+        if (!this.todo.id) {
+          this.todo.createAt = newDate;
+        }
         this.todo.modifiedAt = newDate;
-        this.props.uploadTodo(this.todo);
+        this.props.upsertTodo(this.todo);
         this.setState({ message: 'submit success' });
         setTimeout(() => {
           this.reset();
         }, 3000);
       } else {
         // failed
-        this.setState({ message: 'submit failed' });
+        this.setState({ message: 'submit failed', loading: false });
       }
     }, 1000)
   }
