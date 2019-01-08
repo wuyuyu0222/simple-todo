@@ -5,7 +5,7 @@ const db = {
       id: 2,
       category: 'test',
       title: 'real todo',
-      content: `animation \n goto func`,
+      content: `animation \n goto select group by category`,
       progress: 0,
       userId: 'jakeWu',
       createAt: new Date(2018, 12, 6, 14, 30, 7),

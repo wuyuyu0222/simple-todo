@@ -9,23 +9,33 @@ const TodoUpsert = lazy(() => import('./Todo-Upsert'));
 export default class Todo extends Component {
   constructor(props) {
     super(props);
-    this.db = db
+    this.db = db;
+    this.todoList = cloneDeep(this.db.todo);
     this.state = {
-      todoList: this.db.todo || [],
+      todoList: this.todoList || [],
       upsert: false,
     };
     this.selectedTodo = {};
   }
 
   searchTodo = (searchString) => {
-    const todoList = this.db.todo.filter(todo => {
+    const todoList = this.todoList.filter(todo => {
       return (
         todo.title.includes(searchString) ||
         todo.category.includes(searchString) ||
         todo.content.includes(searchString)
       )
     });
-    this.setState({ todoList: todoList });
+    this.setState({ searchString: searchString, todoList: todoList });
+  }
+
+  gotoTodo = (id) => {
+    const todo = this.todoList.find(todo => todo.id === id);
+    if (todo) {
+      this.setState({ todoList: [todo] });
+    } else {
+      this.setState({ todoList: this.db.todo });
+    }
   }
 
   addTodo = () => {
@@ -46,8 +56,9 @@ export default class Todo extends Component {
   }
 
   deleteTodo = (id) => {
-    const todoList = this.state.todoList.filter(todo => todo.id !== id);
-    this.setState({ todoList: todoList });
+    const todoList = this.todoList.filter(todo => todo.id !== id);
+    this.todoList = todoList;
+    this.setState({ todoList: this.todoList });
   }
 
   cancelTodo = () => {
@@ -55,29 +66,44 @@ export default class Todo extends Component {
   }
 
   upsertTodo = (todo) => {
-    let targetTodo = this.state.todoList.find(t => t.id === todo.id);
+    let targetTodo = this.todoList.find(t => t.id === todo.id);
     if (targetTodo) {
       targetTodo = Object.assign(targetTodo, todo);
     } else {
       todo.id = this.state.todoList.length;
-      this.state.todoList.unshift(todo);
+      this.todoList.unshift(todo);
     }
-    this.setState({ todoList: this.state.todoList, upsert: false });
+    this.setState({ todoList: this.todoList, upsert: false });
   }
 
   render() {
     return (
       <Grid container spacing={24}>
         <Grid item xs={12}>
-          <TodoTopbar searchTodo={this.searchTodo} addTodo={this.addTodo}></TodoTopbar>
+          <TodoTopbar
+            list={this.todoList}
+            disabled={this.state.upsert}
+            searchTodo={this.searchTodo}
+            gotoTodo={this.gotoTodo}
+            addTodo={this.addTodo}
+          />
         </Grid>
         {this.state.upsert &&
           <Grid item xs={12}>
-            <TodoUpsert todo={this.selectedTodo} cancelTodo={this.cancelTodo} upsertTodo={this.upsertTodo} />
+            <TodoUpsert
+              todo={this.selectedTodo}
+              cancelTodo={this.cancelTodo}
+              upsertTodo={this.upsertTodo}
+            />
           </Grid>
         }
         <Grid item xs={12}>
-          <TodoList list={this.state.todoList} upsert={this.state.upsert} editTodo={this.editTodo} deleteTodo={this.deleteTodo}></TodoList>
+          <TodoList
+            list={this.state.todoList}
+            upsert={this.state.upsert}
+            editTodo={this.editTodo}
+            deleteTodo={this.deleteTodo}
+          />
         </Grid>
       </Grid>
     )

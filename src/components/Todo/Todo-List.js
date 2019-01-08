@@ -28,11 +28,7 @@ export default class TodoList extends Component {
                   <div className="todo-progress">
                     {(item.progress > 0 && item.progress < 100) ? item.progress + '%' :
                       item.progress === 0 ? 'ready' : item.progress === 100 ? 'done' : 'unknown'}
-                    <LinearProgress classes={{
-                      colorPrimary: 'primary-progress-color',
-                      barColorPrimary: 'primary-progress-bar-color'
-                    }}
-                      variant="determinate" color="primary" value={item.progress} />
+                    <LinearProgress variant="determinate" color="primary" value={item.progress} />
                   </div>
                   <div className="todo-content">{item.content.split('\n').map((item, idx) => <p key={idx}>{item}</p>)}</div>
                   <div className="todo-author">{item.userId} at {item.modifiedAt.toLocaleDateString()}</div>

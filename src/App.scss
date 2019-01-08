@@ -18,6 +18,15 @@ body {
   }
 }
 
+.input-button {
+  padding: 0 !important;
+  color: rgba(0, 0, 0, .43);
+  svg{
+    width: 0.9rem;
+    height: 0.9rem;
+  }
+}
+
 .outline-block {
   outline: black solid 1px;
   width: 100%;
