@@ -7,24 +7,29 @@ export default class TodoTopbar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedValue: 'all'
+      searchString: '',
+      category: 'all'
     }
   }
 
-  selectTodo = (e) => {
-    this.setState({ selectedValue: e.target.value });
-    this.props.selectTodo(e.target.value);
+  handleSearch = (value) => {
+    this.setState({ searchString: value });
+    this.props.searchTodo(value, this.state.category);
+  }
+
+  handleSelect = (e) => {
+    this.setState({ category: e.target.value });
+    this.props.searchTodo(this.state.searchString, e.target.value);
   }
 
   render() {
-    const { list, addTodo, searchTodo, disabled } = this.props;
-    const categoryList = [...(new Set(list.map(todo => todo.category)))]
+    const { list, addTodo, disabled } = this.props;
     return (
       <Grid container spacing={16}>
         <Grid item xs={6}>
           <div className="todo-search">
             <Searchbar
-              handleSearch={searchTodo}
+              handleSearch={this.handleSearch}
               disabled={disabled}
             />
           </div>
@@ -32,12 +37,12 @@ export default class TodoTopbar extends Component {
         <Grid item xs={3}>
           <div className="todo-select-category">
             <Select id="goto-select" fullWidth
-              value={this.state.selectedValue}
-              onChange={this.selectTodo}
+              value={this.state.category}
+              onChange={this.handleSelect}
               disabled={this.props.disabled}
             >
               <MenuItem value={'all'}>all category</MenuItem>
-              {categoryList.map((item, idx) => (
+              {list.map((item, idx) => (
                 <MenuItem key={idx} value={item}>
                   {item ? item : <em>(empty category)</em>}
                 </MenuItem>

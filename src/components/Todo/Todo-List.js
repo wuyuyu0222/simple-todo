@@ -7,13 +7,13 @@ import TodoItem from './Todo-Item';
 export default class TodoList extends Component {
   static propTypes = {
     list: PropTypes.array,
-    upsert: PropTypes.bool,
+    disabled: PropTypes.bool,
     editTodo: PropTypes.func,
     deleteTodo: PropTypes.func
   }
 
   render() {
-    const { list, editTodo, deleteTodo } = this.props;
+    const { list, disabled, editTodo, deleteTodo } = this.props;
     if (list.length > 0) {
       return (
         <Grid container spacing={16}>
@@ -21,6 +21,7 @@ export default class TodoList extends Component {
             <Grid item xs={12} key={item.id}>
               <TodoItem
                 todo={item}
+                disabled={disabled}
                 editTodo={editTodo}
                 deleteTodo={deleteTodo} />
             </Grid>

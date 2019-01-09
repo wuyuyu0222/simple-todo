@@ -5,11 +5,12 @@ import { Paper, Button, LinearProgress } from '@material-ui/core';
 export default class TodoItem extends Component {
   static propTypes = {
     todo: PropTypes.object,
+    disabled: PropTypes.bool,
     editTodo: PropTypes.func,
     deleteTodo: PropTypes.func
   }
   render() {
-    const { todo, editTodo, deleteTodo } = this.props;
+    const { todo, disabled, editTodo, deleteTodo } = this.props;
     return (
       <Paper>
         <div className="todo-block">
@@ -25,8 +26,8 @@ export default class TodoItem extends Component {
           <div className="todo-content">{todo.content.split('\n').map((todo, idx) => <p key={idx}>{todo}</p>)}</div>
           <div className="todo-author">{todo.userId} at {todo.modifiedAt.toLocaleDateString()}</div>
           <div className="todo-action">
-            <Button disabled={this.props.upsert} onClick={() => editTodo(todo.id)}>Edit</Button>
-            <Button color="secondary" disabled={this.props.upsert} onClick={() => deleteTodo(todo.id)}>Delete</Button>
+            <Button disabled={disabled} onClick={() => editTodo(todo.id)}>Edit</Button>
+            <Button color="secondary" disabled={disabled} onClick={() => deleteTodo(todo.id)}>Delete</Button>
           </div>
         </div>
       </Paper>

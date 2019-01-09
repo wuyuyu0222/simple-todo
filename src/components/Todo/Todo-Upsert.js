@@ -15,6 +15,10 @@ export default class TodoUpsert extends Component {
     this.todo = cloneDeep(this.props.todo);
   }
 
+  componentWillUnmount() {
+    this.reset();
+  }
+
   handleCancel = () => {
     this.reset();
     this.props.cancelTodo();
@@ -32,26 +36,18 @@ export default class TodoUpsert extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const random = Math.floor(Math.random() * 100) + 1;
     this.setState({ loading: true, message: '' });
-    setTimeout(() => {
-      if (random < 95) {
-        // success
-        const newDate = new Date();
-        if (!this.todo.id) {
-          this.todo.createAt = newDate;
-        }
-        this.todo.modifiedAt = newDate;
-        this.setState({ message: 'submit success' });
-        setTimeout(() => {
-          this.props.upsertTodo(this.todo);
-          this.reset();
-        }, 1000);
-      } else {
-        // failed
-        this.setState({ message: 'submit failed', loading: false });
-      }
-    }, 1000)
+    const newDate = new Date();
+    if (!this.todo.id) {
+      this.todo.createAt = newDate;
+    }
+    this.todo.modifiedAt = newDate;
+    this.props.upsertTodo(this.todo).then(res => {
+      this.setState({ message: 'submit success' });
+      this.props.updateList();
+    }, err => {
+      this.setState({ message: 'submit failed' });
+    });
   }
 
   checkProgressValid = (progress) => {
