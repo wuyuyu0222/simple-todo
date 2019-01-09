@@ -66,33 +66,52 @@ export default class TodoUpsert extends Component {
   }
 
   render() {
+    const todo = this.todo;
+    const { formValid, dirty, loading, message } = this.state;
     return (
       <Grid container spacing={16}>
         <Grid item xs={12}>
           <Paper>
-            <form className="todo-form" onSubmit={this.handleSubmit} autoComplete="off">
+            <form className="todo-form" autoComplete="off"
+              onSubmit={this.handleSubmit}
+            >
               <Grid container spacing={16}>
                 <Grid item xs={4}>
-                  <TextField id="title" label="Title" value={this.todo.title} onChange={this.handleInput} fullWidth></TextField>
+                  <TextField id="title" label="Title" fullWidth
+                    value={todo.title}
+                    onChange={this.handleInput}
+                  ></TextField>
                 </Grid>
                 <Grid item xs={4}>
-                  <TextField id="category" label="Category" value={this.todo.category} onChange={this.handleInput} fullWidth></TextField>
+                  <TextField id="category" label="Category" fullWidth
+                    value={todo.category}
+                    onChange={this.handleInput}
+                  ></TextField>
                 </Grid>
                 <Grid item xs={4}>
-                  <TextField id="progress" label="Progress" value={this.todo.progress} onChange={this.handleInput} error={this.state.dirty && !this.checkProgressValid(this.todo.progress)} fullWidth type="number"></TextField>
+                  <TextField id="progress" label="Progress" type="number" fullWidth
+                    value={todo.progress}
+                    onChange={this.handleInput}
+                    error={dirty && !this.checkProgressValid(todo.progress)}
+                  ></TextField>
                 </Grid>
                 <Grid item xs={12}>
-                  <TextField id="content" label="Content" value={this.todo.content} onChange={this.handleInput} error={this.state.dirty && !this.checkContentValid(this.todo.content)} fullWidth multiline rows="3"></TextField>
+                  <TextField id="content" label="Content" rows="3" multiline fullWidth
+                    value={todo.content}
+                    onChange={this.handleInput}
+                    error={dirty && !this.checkContentValid(todo.content)}
+                  ></TextField>
                 </Grid>
                 <Grid item xs={6}>
                   <div className="todo-message">
-                    <p>{this.state.message}</p>
+                    <p>{message}</p>
                   </div>
                 </Grid>
                 <Grid item xs={6}>
                   <div className="todo-action">
                     <Button color="secondary" onClick={this.handleCancel}>CANCEL</Button>
-                    <Button variant="outlined" type="submit" disabled={!this.state.formValid || !this.state.dirty || this.state.loading}>SUBMIT</Button>
+                    <Button variant="outlined" type="submit"
+                      disabled={!formValid || !dirty || loading}>SUBMIT</Button>
                   </div>
                 </Grid>
               </Grid>

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { TextField, IconButton, InputAdornment } from '@material-ui/core';
 import { Search, Cancel } from '@material-ui/icons';
 
-import './style/layout.scss';
+import './shared.scss';
 
 export default class Searchbar extends Component {
 

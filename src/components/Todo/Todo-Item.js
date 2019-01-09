@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
-import { Paper, Button, LinearProgress, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions } from '@material-ui/core';
+import { Paper, Button, LinearProgress } from '@material-ui/core';
+import DefaultDialog from '../shared/Default-Dialog';
 
 export default class TodoItem extends Component {
   static propTypes = {
@@ -33,6 +34,8 @@ export default class TodoItem extends Component {
     })
   }
 
+
+
   render() {
     const { todo, disabled, editTodo } = this.props;
     return (
@@ -56,29 +59,14 @@ export default class TodoItem extends Component {
             </div>
           </div>
         </Paper>
-        <Dialog
+        <DefaultDialog
+          title={'Confirm to delete this todo?'}
+          content={`todo title "${todo.title}"`}
+          disabled={this.state.loading}
           open={this.state.isDeleteDialogOpen}
-          onClose={this.closeDeleteDialog}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title">Confirm to delete this todo?</DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              {`todo title "${todo.title}"`}
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button color="primary" disabled={this.state.loading}
-              onClick={this.closeDeleteDialog}>
-              Cancel
-            </Button>
-            <Button color="secondary" disabled={this.state.loading} autoFocus
-              onClick={this.handleDelete}>
-              Delete
-            </Button>
-          </DialogActions>
-        </Dialog>
+          handleCancel={this.closeDeleteDialog}
+          handleConfirm={this.handleDelete}
+        />
       </>
     )
   }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Grid, Button, Select, MenuItem } from '@material-ui/core';
 
-import Searchbar from '../../layouts/Searchbar';
+import Searchbar from '../shared/Searchbar';
 
 export default class TodoTopbar extends Component {
 
@@ -25,6 +25,11 @@ export default class TodoTopbar extends Component {
 
   render() {
     const { list, addTodo, disabled } = this.props;
+    const menuItems = list.map((item, idx) => (
+      <MenuItem key={idx} value={item}>
+        {item ? item : <em>(empty category)</em>}
+      </MenuItem>
+    ));
     return (
       <Grid container spacing={16}>
         <Grid item xs={6}>
@@ -43,11 +48,7 @@ export default class TodoTopbar extends Component {
               disabled={this.props.disabled}
             >
               <MenuItem value={'all'}>all category</MenuItem>
-              {list.map((item, idx) => (
-                <MenuItem key={idx} value={item}>
-                  {item ? item : <em>(empty category)</em>}
-                </MenuItem>
-              ))}
+              {menuItems}
             </Select>
           </div>
         </Grid>

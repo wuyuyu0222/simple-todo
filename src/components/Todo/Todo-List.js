@@ -14,20 +14,21 @@ export default class TodoList extends Component {
 
   render() {
     const { list, disabled, editTodo, deleteTodo, updateList } = this.props;
+    const todoItems = list.map(item => (
+      <Grid item xs={12} key={item.id}>
+        <TodoItem
+          todo={item}
+          disabled={disabled}
+          editTodo={editTodo}
+          deleteTodo={deleteTodo}
+          updateList={updateList}
+        />
+      </Grid>
+    ))
     if (list.length > 0) {
       return (
         <Grid container spacing={16}>
-          {list.map(item => (
-            <Grid item xs={12} key={item.id}>
-              <TodoItem
-                todo={item}
-                disabled={disabled}
-                editTodo={editTodo}
-                deleteTodo={deleteTodo}
-                updateList={updateList}
-              />
-            </Grid>
-          ))}
+          {todoItems}
         </Grid>
       )
     } else {

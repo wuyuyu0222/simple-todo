@@ -62,12 +62,13 @@ export default class Todo extends Component {
   }
 
   render() {
+    const { upsert, loading } = this.state;
     return (
       <Grid container spacing={16}>
         <Grid item xs={12}>
           <TodoTopbar
             list={this.categoryList}
-            disabled={this.state.loading}
+            disabled={loading}
             searchTodo={this.searchTodo}
             addTodo={this.addTodo}
           />
@@ -85,7 +86,7 @@ export default class Todo extends Component {
         <Grid item xs={12}>
           <TodoList
             list={this.state.todoList}
-            disabled={this.state.upsert || this.state.loading}
+            disabled={upsert || loading}
             editTodo={this.editTodo}
             deleteTodo={Utils.deleteTodo}
             updateList={this.updateList}
