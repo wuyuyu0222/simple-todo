@@ -16,29 +16,40 @@ export default class Todo extends Component {
     this.todoList = cloneDeep(this.db.todo);
     this.state = {
       todoList: this.todoList || [],
+      searchString: '',
       upsert: false,
     };
     this.selectedTodo = {};
   }
 
   searchTodo = (searchString) => {
-    const todoList = this.todoList.filter(todo => {
-      return (
-        todo.title.includes(searchString) ||
-        todo.category.includes(searchString) ||
-        todo.content.includes(searchString)
-      )
+    const todoList = this.state.todoList.filter(todo => {
+      return this.searchCondition(todo, searchString);
     });
     this.setState({ searchString: searchString, todoList: todoList });
   }
 
-  gotoTodo = (id) => {
-    const todo = this.todoList.find(todo => todo.id === id);
-    if (todo) {
-      this.setState({ todoList: [todo] });
+  selectTodoByCategory = (category) => {
+    let todoList = [];
+    if (category === 'all') {
+      todoList = this.db.todo.filter(todo => {
+        return this.searchCondition(todo, this.state.searchString);
+      });
     } else {
-      this.setState({ todoList: this.db.todo });
+      todoList = this.todoList.filter(todo => {
+        return todo.category === category &&
+          this.searchCondition(todo, this.state.searchString);
+      });
     }
+    this.setState({ todoList: todoList });
+  }
+
+  searchCondition = (todo, searchString) => {
+    return (
+      todo.title.includes(searchString) ||
+      todo.category.includes(searchString) ||
+      todo.content.includes(searchString)
+    )
   }
 
   addTodo = () => {
@@ -81,13 +92,13 @@ export default class Todo extends Component {
 
   render() {
     return (
-      <Grid container spacing={24}>
+      <Grid container spacing={16}>
         <Grid item xs={12}>
           <TodoTopbar
             list={this.todoList}
             disabled={this.state.upsert}
             searchTodo={this.searchTodo}
-            gotoTodo={this.gotoTodo}
+            selectTodo={this.selectTodoByCategory}
             addTodo={this.addTodo}
           />
         </Grid>

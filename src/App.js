@@ -1,5 +1,6 @@
 import React, { Component, Suspense } from 'react';
 import { CssBaseline, createMuiTheme, MuiThemeProvider } from '@material-ui/core';
+
 import './App.scss';
 import Container from './layouts/Container';
 import Todo from './components/Todo/Todo';

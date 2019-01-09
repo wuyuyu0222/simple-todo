@@ -7,18 +7,18 @@ export default class TodoTopbar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedValue: ''
+      selectedValue: 'all'
     }
   }
 
-  gotoTodo = (e) => {
-    this.cancelSearch();
+  selectTodo = (e) => {
     this.setState({ selectedValue: e.target.value });
-    this.props.gotoTodo(e.target.value);
+    this.props.selectTodo(e.target.value);
   }
 
   render() {
     const { list, addTodo, searchTodo, disabled } = this.props;
+    const categoryList = [...(new Set(list.map(todo => todo.category)))]
     return (
       <Grid container spacing={16}>
         <Grid item xs={6}>
@@ -30,16 +30,16 @@ export default class TodoTopbar extends Component {
           </div>
         </Grid>
         <Grid item xs={3}>
-          <div className="todo-goto">
-            <Select id="goto-select" displayEmpty fullWidth
+          <div className="todo-select-category">
+            <Select id="goto-select" fullWidth
               value={this.state.selectedValue}
-              onChange={this.gotoTodo}
+              onChange={this.selectTodo}
               disabled={this.props.disabled}
             >
-              <MenuItem value={''}>all</MenuItem>
-              {list.map(item => (
-                <MenuItem key={item.id} value={item.id}>
-                  {item.title ? item.title : <em>(empty title todo)</em>}
+              <MenuItem value={'all'}>all category</MenuItem>
+              {categoryList.map((item, idx) => (
+                <MenuItem key={idx} value={item}>
+                  {item ? item : <em>(empty category)</em>}
                 </MenuItem>
               ))}
             </Select>
@@ -47,7 +47,7 @@ export default class TodoTopbar extends Component {
         </Grid>
         <Grid item xs={3}>
           <div className="text-right">
-            <Button variant='text' disabled={this.props.disabled} onClick={() => addTodo()}>
+            <Button className="sentence-button" variant='text' disabled={this.props.disabled} onClick={() => addTodo()}>
               add new todo
             </Button>
           </div>
