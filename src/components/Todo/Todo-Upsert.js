@@ -15,12 +15,19 @@ export default class TodoUpsert extends Component {
     this.todo = cloneDeep(this.props.todo);
   }
 
-  componentWillUnmount() {
-    this.reset();
-  }
-
   handleCancel = () => {
-    this.reset();
+    this.todo = {
+      title: '',
+      category: '',
+      progress: 0,
+      content: ''
+    }
+    this.setState({
+      formValid: false,
+      dirty: false,
+      loading: false,
+      message: ''
+    });
     this.props.cancelTodo();
   }
 
@@ -44,9 +51,9 @@ export default class TodoUpsert extends Component {
     this.todo.modifiedAt = newDate;
     this.props.upsertTodo(this.todo).then(res => {
       this.setState({ message: 'submit success' });
-      this.props.updateList();
+      setTimeout(() => this.props.updateList(), 300);
     }, err => {
-      this.setState({ message: 'submit failed' });
+      this.setState({ loading: false, message: 'submit failed' });
     });
   }
 
@@ -56,21 +63,6 @@ export default class TodoUpsert extends Component {
 
   checkContentValid = (content) => {
     return content !== '';
-  }
-
-  reset = () => {
-    this.todo = {
-      title: '',
-      category: '',
-      progress: 0,
-      content: ''
-    }
-    this.setState({
-      formValid: false,
-      dirty: false,
-      loading: false,
-      message: ''
-    });
   }
 
   render() {

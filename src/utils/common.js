@@ -1,8 +1,7 @@
-import db from './database';
+import { db } from './database';
 
 export const Utils = {
   getTodoList: () => {
-
     return new Promise((resolve, reject) => {
       const ran = Math.floor((Math.random() * 100) + 1);
       if (ran > 1) {
@@ -61,9 +60,9 @@ export const Utils = {
     return new Promise((resolve, reject) => {
       const ran = Math.floor((Math.random() * 100) + 1);
       if (ran > 1) {
-        const targetTodo = db.todo.find(t => t.id === todo.id);
+        let targetTodo = db.todo.find(t => t.id === todo.id);
         if (targetTodo) {
-          this.targetTodo = Object.assign(this.targetTodo, todo);
+          targetTodo = Object.assign(targetTodo, todo);
         } else {
           todo.id = db.todo.length;
           db.todo.unshift(todo);

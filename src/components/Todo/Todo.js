@@ -64,7 +64,7 @@ export default class Todo extends Component {
   updateList = () => {
     Utils.getTodoList().then(res => {
       this.categoryList = [...(new Set(res.map(todo => todo.category)))];
-      this.setState({ todoList: res, upsert: false });
+      this.setState({ todoList: res, upsert: false, loading: false });
     })
   }
 

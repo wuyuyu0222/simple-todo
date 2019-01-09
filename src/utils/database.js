@@ -1,11 +1,11 @@
-const db = {
+export const db = {
   user: [],
   todo: [
     {
       id: 3,
       category: 'test',
       title: 'real todo',
-      content: `confirm dialog \n animation`,
+      content: `confirm dialog\nredux\nanimation`,
       progress: 0,
       userId: 'jakeWu',
       createAt: new Date(2018, 12, 6, 14, 30, 7),
@@ -43,5 +43,3 @@ const db = {
     }
   ]
 }
-
-export default db;
