@@ -50,13 +50,6 @@ export default class Todo extends Component {
     this.setState({ upsert: true });
   }
 
-  deleteTodo = (id) => {
-    this.setState({ loading: true });
-    Utils.deleteTodo(id).then(r => {
-      this.updateList();
-    })
-  }
-
   cancelTodo = () => {
     this.setState({ upsert: false });
   }
@@ -94,7 +87,8 @@ export default class Todo extends Component {
             list={this.state.todoList}
             disabled={this.state.upsert || this.state.loading}
             editTodo={this.editTodo}
-            deleteTodo={this.deleteTodo}
+            deleteTodo={Utils.deleteTodo}
+            updateList={this.updateList}
           />
         </Grid>
       </Grid>

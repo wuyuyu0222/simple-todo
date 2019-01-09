@@ -13,7 +13,7 @@ export default class TodoList extends Component {
   }
 
   render() {
-    const { list, disabled, editTodo, deleteTodo } = this.props;
+    const { list, disabled, editTodo, deleteTodo, updateList } = this.props;
     if (list.length > 0) {
       return (
         <Grid container spacing={16}>
@@ -23,7 +23,9 @@ export default class TodoList extends Component {
                 todo={item}
                 disabled={disabled}
                 editTodo={editTodo}
-                deleteTodo={deleteTodo} />
+                deleteTodo={deleteTodo}
+                updateList={updateList}
+              />
             </Grid>
           ))}
         </Grid>
