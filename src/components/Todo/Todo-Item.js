@@ -18,8 +18,12 @@ export default class TodoItem extends Component {
     };
   }
 
-  toggleDeleteDialog = (open) => {
-    this.setState({ isDeleteDialogOpen: open });
+  openDeleteDialog = () => {
+    this.setState({ isDeleteDialogOpen: true });
+  }
+
+  closeDeleteDialog = () => {
+    this.setState({ isDeleteDialogOpen: false });
   }
 
   handleDelete = () => {
@@ -48,13 +52,13 @@ export default class TodoItem extends Component {
             <div className="todo-author">{todo.userId} at {todo.modifiedAt.toLocaleDateString()}</div>
             <div className="todo-action">
               <Button disabled={disabled} onClick={() => editTodo(todo.id)}>Edit</Button>
-              <Button color="secondary" disabled={disabled} onClick={() => this.toggleDeleteDialog(true)}>Delete</Button>
+              <Button color="secondary" disabled={disabled} onClick={this.openDeleteDialog}>Delete</Button>
             </div>
           </div>
         </Paper>
         <Dialog
           open={this.state.isDeleteDialogOpen}
-          onClose={() => this.toggleDeleteDialog(false)}
+          onClose={this.closeDeleteDialog}
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
@@ -66,11 +70,11 @@ export default class TodoItem extends Component {
           </DialogContent>
           <DialogActions>
             <Button color="primary" disabled={this.state.loading}
-              onClick={() => this.toggleDeleteDialog(false)}>
+              onClick={this.closeDeleteDialog}>
               Cancel
             </Button>
             <Button color="secondary" disabled={this.state.loading} autoFocus
-              onClick={() => this.handleDelete(false)}>
+              onClick={this.handleDelete}>
               Delete
             </Button>
           </DialogActions>
