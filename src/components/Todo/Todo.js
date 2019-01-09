@@ -1,9 +1,12 @@
 import React, { Component, lazy } from 'react'
 import { Grid } from '@material-ui/core';
 import { cloneDeep } from 'lodash';
+
 import db from '../../utils/database';
 import TodoTopbar from './Todo-Topbar';
 import TodoList from './Todo-List';
+import './todo.scss';
+
 const TodoUpsert = lazy(() => import('./Todo-Upsert'));
 
 export default class Todo extends Component {

@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Grid, Paper, TextField, Button } from '@material-ui/core';
 import { cloneDeep } from 'lodash';
-import './todo.scss';
 
 export default class TodoUpsert extends Component {
   constructor(props) {

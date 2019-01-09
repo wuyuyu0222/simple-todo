@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { Grid } from '@material-ui/core';
 
-import { Grid, Paper, Button, LinearProgress } from '@material-ui/core';
-import './todo.scss';
+import TodoItem from './Todo-Item';
 
 export default class TodoList extends Component {
   static propTypes = {
@@ -19,25 +19,10 @@ export default class TodoList extends Component {
         <Grid container spacing={16}>
           {list.map(item => (
             <Grid item xs={12} key={item.id}>
-              <Paper>
-                <div className="todo-block">
-                  <div className="todo-title">
-                    <span>{item.title}</span>
-                    <span className="title-category">{item.category}</span>
-                  </div>
-                  <div className="todo-progress">
-                    {(item.progress > 0 && item.progress < 100) ? item.progress + '%' :
-                      item.progress === 0 ? 'ready' : item.progress === 100 ? 'done' : 'unknown'}
-                    <LinearProgress variant="determinate" color="primary" value={item.progress} />
-                  </div>
-                  <div className="todo-content">{item.content.split('\n').map((item, idx) => <p key={idx}>{item}</p>)}</div>
-                  <div className="todo-author">{item.userId} at {item.modifiedAt.toLocaleDateString()}</div>
-                  <div className="todo-action">
-                    <Button disabled={this.props.upsert} onClick={() => editTodo(item.id)}>Edit</Button>
-                    <Button color="secondary" disabled={this.props.upsert} onClick={() => deleteTodo(item.id)}>Delete</Button>
-                  </div>
-                </div>
-              </Paper>
+              <TodoItem
+                todo={item}
+                editTodo={editTodo}
+                deleteTodo={deleteTodo} />
             </Grid>
           ))}
         </Grid>

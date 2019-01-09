@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { Grid } from '@material-ui/core';
+
+import './style/layout.scss';
 export default class Container extends Component {
 
   render() {
