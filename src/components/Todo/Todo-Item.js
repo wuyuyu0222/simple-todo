@@ -30,6 +30,7 @@ export default class TodoItem extends Component {
   handleDelete = () => {
     this.setState({ loading: true });
     this.props.deleteTodo(this.props.todo.id).then(res => {
+      this.closeDeleteDialog();
       this.props.updateList();
     })
   }

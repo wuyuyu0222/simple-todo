@@ -27,7 +27,7 @@ export default class DefaultDialog extends Component {
             {content}
           </DialogContentText>
         </DialogContent>
-        <DialogActions>
+        <DialogActions id="default-dialog-action">
           <Button color="primary" disabled={disabled}
             onClick={handleCancel}>
             Cancel

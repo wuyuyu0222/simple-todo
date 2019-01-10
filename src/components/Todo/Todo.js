@@ -64,35 +64,36 @@ export default class Todo extends Component {
   render() {
     const { upsert, loading } = this.state;
     return (
-      <Grid container spacing={16}>
-        <Grid item xs={12}>
-          <TodoTopbar
-            list={this.categoryList}
-            disabled={loading}
-            searchTodo={this.searchTodo}
-            addTodo={this.addTodo}
-          />
-        </Grid>
-        {this.state.upsert &&
+      <>
+        <Grid container spacing={16}>
           <Grid item xs={12}>
-            <TodoUpsert
-              todo={this.selectedTodo}
-              cancelTodo={this.cancelTodo}
-              upsertTodo={Utils.upsertTodo}
+            <TodoTopbar
+              list={this.categoryList}
+              disabled={loading}
+              searchTodo={this.searchTodo}
+              addTodo={this.addTodo}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TodoList
+              list={this.state.todoList}
+              disabled={upsert || loading}
+              editTodo={this.editTodo}
+              deleteTodo={Utils.deleteTodo}
               updateList={this.updateList}
             />
           </Grid>
-        }
-        <Grid item xs={12}>
-          <TodoList
-            list={this.state.todoList}
-            disabled={upsert || loading}
-            editTodo={this.editTodo}
-            deleteTodo={Utils.deleteTodo}
+        </Grid>
+        {this.state.upsert &&
+          <TodoUpsert
+            open={this.state.upsert}
+            todo={this.selectedTodo}
+            cancelTodo={this.cancelTodo}
+            upsertTodo={Utils.upsertTodo}
             updateList={this.updateList}
           />
-        </Grid>
-      </Grid>
+        }
+      </>
     )
   }
 }

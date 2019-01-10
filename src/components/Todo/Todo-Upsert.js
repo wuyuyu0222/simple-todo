@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Grid, Paper, TextField, Button } from '@material-ui/core';
+import { Dialog, Grid, Paper, TextField, Button } from '@material-ui/core';
 import { cloneDeep } from 'lodash';
 
 export default class TodoUpsert extends Component {
@@ -66,59 +66,59 @@ export default class TodoUpsert extends Component {
   }
 
   render() {
-    const todo = this.todo;
+    const { open } = this.props;
     const { formValid, dirty, loading, message } = this.state;
+    const todo = this.todo;
     return (
-      <Grid container spacing={16}>
-        <Grid item xs={12}>
-          <Paper>
-            <form className="todo-form" autoComplete="off"
-              onSubmit={this.handleSubmit}
-            >
-              <Grid container spacing={16}>
-                <Grid item xs={4}>
-                  <TextField id="title" label="Title" fullWidth
-                    value={todo.title}
-                    onChange={this.handleInput}
-                  ></TextField>
-                </Grid>
-                <Grid item xs={4}>
-                  <TextField id="category" label="Category" fullWidth
-                    value={todo.category}
-                    onChange={this.handleInput}
-                  ></TextField>
-                </Grid>
-                <Grid item xs={4}>
-                  <TextField id="progress" label="Progress" type="number" fullWidth
-                    value={todo.progress}
-                    onChange={this.handleInput}
-                    error={dirty && !this.checkProgressValid(todo.progress)}
-                  ></TextField>
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField id="content" label="Content" rows="3" multiline fullWidth
-                    value={todo.content}
-                    onChange={this.handleInput}
-                    error={dirty && !this.checkContentValid(todo.content)}
-                  ></TextField>
-                </Grid>
-                <Grid item xs={6}>
-                  <div className="todo-message">
-                    <p>{message}</p>
-                  </div>
-                </Grid>
-                <Grid item xs={6}>
-                  <div className="todo-action">
-                    <Button color="secondary" onClick={this.handleCancel}>CANCEL</Button>
-                    <Button variant="outlined" type="submit"
-                      disabled={!formValid || !dirty || loading}>SUBMIT</Button>
-                  </div>
-                </Grid>
+      <Dialog open={open}>
+        <Paper>
+          <form className="todo-form" autoComplete="off"
+            onSubmit={this.handleSubmit}
+          >
+            <Grid container className="form-control" spacing={16}>
+              <Grid item xs={4}>
+                <TextField id="title" label="Title" autoFocus fullWidth
+                  value={todo.title}
+                  onChange={this.handleInput}
+                ></TextField>
               </Grid>
-            </form>
-          </Paper>
-        </Grid>
-      </Grid>
+              <Grid item xs={4}>
+                <TextField id="category" label="Category" fullWidth
+                  value={todo.category}
+                  onChange={this.handleInput}
+                ></TextField>
+              </Grid>
+              <Grid item xs={4}>
+                <TextField id="progress" label="Progress" type="number" fullWidth
+                  value={todo.progress}
+                  onChange={this.handleInput}
+                  error={dirty && !this.checkProgressValid(todo.progress)}
+                ></TextField>
+              </Grid>
+              <Grid item xs={12}>
+                <TextField id="content" label="Content" rows="3" multiline fullWidth
+                  value={todo.content}
+                  onChange={this.handleInput}
+                  error={dirty && !this.checkContentValid(todo.content)}
+                ></TextField>
+              </Grid>
+            </Grid>
+            <Grid container className="form-action" spacing={0}>
+              <Grid item xs={6}>
+                <div className="todo-message">
+                  <p>{message}</p>
+                </div></Grid>
+              <Grid item xs={6}>
+                <div className="todo-action">
+                  <Button color="secondary" onClick={this.handleCancel}>CANCEL</Button>
+                  <Button variant="outlined" type="submit"
+                    disabled={!formValid || !dirty || loading}>SUBMIT</Button>
+                </div>
+              </Grid>
+            </Grid>
+          </form>
+        </Paper>
+      </Dialog>
     )
   }
 }

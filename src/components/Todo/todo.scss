@@ -61,6 +61,12 @@
 
 .todo-form {
   padding: 16px;
+  .form-control {
+    padding: 8px;
+  }
+  .form-action {
+    margin-top: 24px;
+  }
 }
 
 .todo-search {
