@@ -12,17 +12,33 @@ export default class TodoList extends Component {
     deleteTodo: PropTypes.func
   }
 
+  constructor(props) {
+    super(props);
+    this.state = { isDeleteDialogOpen: false };
+  }
+
+  onDeleteDialogOpen = () => {
+    this.setState({ isDeleteDialogOpen: true });
+  }
+
+  onDeleteDialogClose = () => {
+    this.setState({ isDeleteDialogOpen: false });
+  }
+
   render() {
     const { list, disabled, editTodo, deleteTodo, updateList } = this.props;
+    const { isDeleteDialogOpen } = this.state;
     if (list.length > 0) {
       const todoItems = list.map(item => (
-        <Grid item xs={12}>
+        <Grid item xs={12} key={item.id}>
           <TodoItem
             todo={item}
-            disabled={disabled}
+            disabled={disabled || isDeleteDialogOpen}
             editTodo={editTodo}
             deleteTodo={deleteTodo}
             updateList={updateList}
+            onDeleteDialogOpen={this.onDeleteDialogOpen}
+            onDeleteDialogClose={this.onDeleteDialogClose}
           />
         </Grid>
       ))

@@ -5,7 +5,7 @@ export const db = {
       id: 3,
       category: 'test',
       title: 'real todo',
-      content: `ux about add new todo disabled\nredux\nanimation`,
+      content: `redux\nanimation`,
       progress: 0,
       userId: 'jakeWu',
       createAt: new Date(2018, 12, 6, 14, 30, 7),

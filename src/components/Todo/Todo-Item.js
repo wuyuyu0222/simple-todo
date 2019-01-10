@@ -21,10 +21,12 @@ export default class TodoItem extends Component {
 
   openDeleteDialog = () => {
     this.setState({ isDeleteDialogOpen: true });
+    this.props.onDeleteDialogOpen();
   }
 
   closeDeleteDialog = () => {
     this.setState({ isDeleteDialogOpen: false });
+    this.props.onDeleteDialogClose();
   }
 
   handleDelete = () => {
@@ -39,6 +41,7 @@ export default class TodoItem extends Component {
 
   render() {
     const { todo, disabled, editTodo } = this.props;
+    const { loading, isDeleteDialogOpen } = this.state;
     return (
       <>
         <Paper>
@@ -63,8 +66,8 @@ export default class TodoItem extends Component {
         <DefaultDialog
           title={'Confirm to delete this todo?'}
           content={`todo title "${todo.title}"`}
-          disabled={this.state.loading}
-          open={this.state.isDeleteDialogOpen}
+          disabled={loading}
+          open={isDeleteDialogOpen}
           handleCancel={this.closeDeleteDialog}
           handleConfirm={this.handleDelete}
         />
