@@ -14,12 +14,12 @@ export default class Todo extends Component {
     super(props);
     this.state = {
       todoList: [],
+      categoryList: [],
       searchString: '',
       category: '',
       upsert: false,
       loading: false,
     };
-    this.categoryList = [];
     this.selectedTodo = {};
   }
 
@@ -36,7 +36,7 @@ export default class Todo extends Component {
   addTodo = () => {
     const newTodo = {
       title: '',
-      category: '',
+      category: this.state.category,
       progress: 0,
       content: '',
       userId: 'jakeWu'
@@ -55,20 +55,31 @@ export default class Todo extends Component {
   }
 
   updateList = () => {
+    if (!this.state.searchString && !this.state.category) {
+      Utils.getTodoList().then(res => {
+        this.setState({ todoList: res, upsert: false, loading: false });
+      });
+    } else {
+      this.searchTodo(this.state.searchString, this.state.category);
+    }
+    this.updateCategoryList();
+  }
+
+  updateCategoryList = () => {
     Utils.getTodoList().then(res => {
-      this.categoryList = [...(new Set(res.map(todo => todo.category)))];
-      this.setState({ todoList: res, upsert: false, loading: false });
+      const categoryList = [...(new Set(res.map(todo => todo.category)))];
+      this.setState({ categoryList: categoryList, upsert: false, loading: false });
     })
   }
 
   render() {
-    const { upsert, loading } = this.state;
+    const { todoList, categoryList, upsert, loading } = this.state;
     return (
       <>
         <Grid container spacing={16}>
           <Grid item xs={12}>
             <TodoTopbar
-              list={this.categoryList}
+              list={categoryList}
               disabled={loading}
               searchTodo={this.searchTodo}
               addTodo={this.addTodo}
@@ -76,7 +87,7 @@ export default class Todo extends Component {
           </Grid>
           <Grid item xs={12}>
             <TodoList
-              list={this.state.todoList}
+              list={todoList}
               disabled={upsert || loading}
               editTodo={this.editTodo}
               deleteTodo={Utils.deleteTodo}
@@ -84,9 +95,9 @@ export default class Todo extends Component {
             />
           </Grid>
         </Grid>
-        {this.state.upsert &&
+        {upsert &&
           <TodoUpsert
-            open={this.state.upsert}
+            open={upsert}
             todo={this.selectedTodo}
             cancelTodo={this.cancelTodo}
             upsertTodo={Utils.upsertTodo}
