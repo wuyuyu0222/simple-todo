@@ -5,7 +5,7 @@ export const db = {
       id: 3,
       category: 'test',
       title: 'real todo',
-      content: `redux\nanimation`,
+      content: `authorization\ngolang\nredux\nanimation`,
       progress: 0,
       userId: 'jakeWu',
       createAt: new Date(2018, 12, 6, 14, 30, 7),

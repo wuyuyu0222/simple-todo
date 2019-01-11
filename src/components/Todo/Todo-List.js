@@ -28,8 +28,9 @@ export default class TodoList extends Component {
   render() {
     const { list, disabled, editTodo, deleteTodo, updateList } = this.props;
     const { isDeleteDialogOpen } = this.state;
+    let renderList;
     if (list.length > 0) {
-      const todoItems = list.map(item => (
+      renderList = list.map(item => (
         <Grid item xs={12} key={item.id}>
           <TodoItem
             todo={item}
@@ -42,23 +43,21 @@ export default class TodoList extends Component {
           />
         </Grid>
       ))
-      return (
-        <Grid container spacing={16}>
-          {todoItems}
-        </Grid>
-      )
     } else {
-      return (
-        <Grid container spacing={16}>
-          <Grid item xs={12}>
-            <div className="todo-block">
-              <div className="todo-empty">
-                <span>your todo list is empty</span>
-              </div>
+      renderList = (
+        <Grid item xs={12}>
+          <div className="todo-block">
+            <div className="todo-empty">
+              <span>your todo list is empty</span>
             </div>
-          </Grid>
+          </div>
         </Grid>
       )
     }
+    return (
+      <Grid container spacing={16}>
+        {renderList}
+      </Grid>
+    );
   }
 }

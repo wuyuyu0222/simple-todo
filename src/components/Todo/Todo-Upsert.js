@@ -5,56 +5,53 @@ import { cloneDeep } from 'lodash';
 export default class TodoUpsert extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      formValid: false,
-      dirty: false,
+    this.state = this.initState(props);
+  }
+
+  initState = (props) => {
+    return {
+      todo: cloneDeep(props.todo),
+      valid: {
+        form: false,
+        progress: false,
+        content: false
+      },
+      dirty: {
+        form: false,
+        progress: false,
+        content: false
+      },
       loading: false,
       message: ''
     };
-
-    this.todo = cloneDeep(this.props.todo);
   }
 
   handleCancel = () => {
-    this.todo = {
-      title: '',
-      category: '',
-      progress: 0,
-      content: ''
-    }
-    this.setState({
-      formValid: false,
-      dirty: false,
-      loading: false,
-      message: ''
-    });
-    this.props.cancelTodo();
+    const props = this.props;
+    this.setState(this.initState(props));
+    props.cancelTodo();
   }
+
+
 
   handleInput = (e) => {
+    const { todo, dirty } = this.state;
     const target = e.target.getAttribute('id');
-    this.todo[target] = e.target.value;
-    if (this.checkContentValid(this.todo.content) && this.checkProgressValid(this.todo.progress)) {
-      this.setState({ formValid: true, dirty: true });
-    } else {
-      this.setState({ formValid: false, dirty: true });
-    }
+    const modifiedTodo = Object.assign(todo, { [target]: e.target.value });
+    const valid = this.checkValid(modifiedTodo);
+    const modifiedDirty = Object.assign(dirty,
+      { form: true, [target]: true });
+    this.setState({ todo: modifiedTodo, valid: valid, dirty: modifiedDirty });
   }
 
-  handleSubmit = (e) => {
-    e.preventDefault();
-    this.setState({ loading: true, message: '' });
-    const newDate = new Date();
-    if (!this.todo.id) {
-      this.todo.createAt = newDate;
-    }
-    this.todo.modifiedAt = newDate;
-    this.props.upsertTodo(this.todo).then(res => {
-      this.setState({ message: 'submit success' });
-      setTimeout(() => this.props.updateList(), 300);
-    }, err => {
-      this.setState({ loading: false, message: 'submit failed' });
-    });
+  checkValid = (todo) => {
+    const contentValid = this.checkContentValid(todo.content);
+    const progressValid = this.checkProgressValid(todo.progress);
+    return {
+      form: contentValid && progressValid,
+      progress: progressValid,
+      content: contentValid
+    };
   }
 
   checkProgressValid = (progress) => {
@@ -65,10 +62,22 @@ export default class TodoUpsert extends Component {
     return content !== '';
   }
 
+  handleSubmit = (e) => {
+    e.preventDefault();
+    const props = this.props;
+    const todo = this.state.todo;
+    this.setState({ loading: true, message: '' });
+    props.upsertTodo(todo).then(res => {
+      this.setState({ loading: false, message: 'submit success' });
+      setTimeout(() => props.updateList(), 300);
+    }, err => {
+      this.setState({ loading: false, message: 'submit failed' });
+    });
+  }
+
   render() {
     const { open } = this.props;
-    const { formValid, dirty, loading, message } = this.state;
-    const todo = this.todo;
+    const { todo, valid, dirty, loading, message } = this.state;
     return (
       <Dialog open={open}>
         <Paper>
@@ -92,14 +101,14 @@ export default class TodoUpsert extends Component {
                 <TextField id="progress" label="Progress" type="number" fullWidth
                   value={todo.progress}
                   onChange={this.handleInput}
-                  error={dirty && !this.checkProgressValid(todo.progress)}
+                  error={!valid.progress && dirty.progress}
                 ></TextField>
               </Grid>
               <Grid item xs={12}>
                 <TextField id="content" label="Content" rows="3" multiline fullWidth
                   value={todo.content}
                   onChange={this.handleInput}
-                  error={dirty && !this.checkContentValid(todo.content)}
+                  error={!valid.content && dirty.content}
                 ></TextField>
               </Grid>
             </Grid>
@@ -112,7 +121,7 @@ export default class TodoUpsert extends Component {
                 <div className="todo-action">
                   <Button color="secondary" onClick={this.handleCancel}>CANCEL</Button>
                   <Button variant="outlined" type="submit"
-                    disabled={!formValid || !dirty || loading}>SUBMIT</Button>
+                    disabled={!valid.form || !dirty.form || loading}>SUBMIT</Button>
                 </div>
               </Grid>
             </Grid>

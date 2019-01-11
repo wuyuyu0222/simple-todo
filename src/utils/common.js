@@ -2,7 +2,7 @@ import { db } from './database';
 
 export const Common = {
   getDistinctArray: (array) => {
-    return [...(new Set(array.map(todo => todo.category)))];
+    return [...(new Set(array))];
   }
 }
 
@@ -66,11 +66,15 @@ export const Utils = {
     return new Promise((resolve, reject) => {
       const ran = Math.floor((Math.random() * 100) + 1);
       if (ran > 1) {
+        todo.progress = parseInt(todo.progress);
+        const newDate = new Date();
+        todo.modifiedAt = newDate;
         let targetTodo = db.todo.find(t => t.id === todo.id);
         if (targetTodo) {
           targetTodo = Object.assign(targetTodo, todo);
         } else {
           todo.id = db.todo.length;
+          todo.createAt = newDate;
           db.todo.unshift(todo);
         }
         setTimeout(() => {

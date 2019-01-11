@@ -14,18 +14,21 @@ export default class TodoTopbar extends Component {
   }
 
   handleSearch = (value) => {
+    const props = this.props;
     this.setState({ searchString: value });
-    this.props.searchTodo(value, this.state.category);
+    props.searchTodo(value, this.state.category);
   }
 
   handleSelect = (e) => {
+    const props = this.props;
     this.setState({ category: e.target.value });
-    this.props.searchTodo(this.state.searchString, e.target.value);
+    props.searchTodo(this.state.searchString, e.target.value);
   }
 
   render() {
     const { list, addTodo, disabled } = this.props;
-    const menuItems = list.map((item, idx) => (
+    const { category } = this.state;
+    const renderItems = list.map((item, idx) => (
       <MenuItem key={idx} value={item}>
         {item ? item : <em>(empty category)</em>}
       </MenuItem>
@@ -43,18 +46,20 @@ export default class TodoTopbar extends Component {
         <Grid item xs={3}>
           <div className="todo-select-category">
             <Select id="goto-select" fullWidth
-              value={this.state.category}
+              value={category}
               onChange={this.handleSelect}
-              disabled={this.props.disabled}
+              disabled={disabled}
             >
               <MenuItem value={'all'}>all category</MenuItem>
-              {menuItems}
+              {renderItems}
             </Select>
           </div>
         </Grid>
         <Grid item xs={3}>
           <div className="text-right">
-            <Button className="sentence-button" variant='text' disabled={this.props.disabled} onClick={() => addTodo()}>
+            <Button className="sentence-button" variant='text'
+              disabled={disabled}
+              onClick={addTodo}>
               add new todo
             </Button>
           </div>

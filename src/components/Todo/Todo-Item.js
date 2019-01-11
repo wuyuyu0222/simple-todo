@@ -20,28 +20,41 @@ export default class TodoItem extends Component {
   }
 
   openDeleteDialog = () => {
+    const props = this.props;
     this.setState({ isDeleteDialogOpen: true });
-    this.props.onDeleteDialogOpen();
+    props.onDeleteDialogOpen();
   }
 
   closeDeleteDialog = () => {
+    const props = this.props;
     this.setState({ isDeleteDialogOpen: false });
-    this.props.onDeleteDialogClose();
+    props.onDeleteDialogClose();
+  }
+
+  handleEdit = () => {
+    const props = this.props;
+    props.editTodo(props.todo.id);
   }
 
   handleDelete = () => {
+    const props = this.props;
     this.setState({ loading: true });
-    this.props.deleteTodo(this.props.todo.id).then(res => {
+    props.deleteTodo(props.todo.id).then(res => {
       this.closeDeleteDialog();
-      this.props.updateList();
+      props.updateList();
     })
   }
 
 
 
   render() {
-    const { todo, disabled, editTodo } = this.props;
+    const { todo, disabled, } = this.props;
     const { loading, isDeleteDialogOpen } = this.state;
+    const status = (todo.progress > 0 && todo.progress < 100) ? todo.progress + '%' :
+      todo.progress === 0 ? 'ready' :
+        todo.progress === 100 ? 'done' : 'unknown';
+    const renderContent = todo.content.split('\n').map((todo, idx) => <p key={idx}>{todo}</p>);
+    const modifiedAt = todo.modifiedAt.toLocaleDateString();
     return (
       <>
         <Paper>
@@ -51,15 +64,17 @@ export default class TodoItem extends Component {
               <span className="title-category">{todo.category}</span>
             </div>
             <div className="todo-progress">
-              {(todo.progress > 0 && todo.progress < 100) ? todo.progress + '%' :
-                todo.progress === 0 ? 'ready' : todo.progress === 100 ? 'done' : 'unknown'}
-              <LinearProgress variant="determinate" color="primary" value={todo.progress} />
+              {status}
+              <LinearProgress variant="determinate" color="primary"
+                value={todo.progress} />
             </div>
-            <div className="todo-content">{todo.content.split('\n').map((todo, idx) => <p key={idx}>{todo}</p>)}</div>
-            <div className="todo-author">{todo.userId} at {todo.modifiedAt.toLocaleDateString()}</div>
+            <div className="todo-content">{renderContent}</div>
+            <div className="todo-author">{todo.userId} at {modifiedAt}</div>
             <div className="todo-action">
-              <Button disabled={disabled} onClick={() => editTodo(todo.id)}>Edit</Button>
-              <Button color="secondary" disabled={disabled} onClick={this.openDeleteDialog}>Delete</Button>
+              <Button disabled={disabled} onClick={this.handleEdit}>Edit</Button>
+              <Button color="secondary"
+                disabled={disabled}
+                onClick={this.openDeleteDialog}>Delete</Button>
             </div>
           </div>
         </Paper>

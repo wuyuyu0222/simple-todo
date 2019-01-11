@@ -14,13 +14,19 @@ export default class Searchbar extends Component {
   }
 
   handleSearch = (e) => {
+    const props = this.props;
     this.setState({ searchString: e.target.value });
-    this.props.handleSearch(e.target.value);
+    props.handleSearch(e.target.value);
   }
 
   handleCancel = () => {
+    const props = this.props;
     this.setState({ searchString: '' });
-    this.props.handleSearch('');
+    props.handleSearch('');
+    this.focusSearchInput();
+  }
+
+  focusSearchInput = () => {
     document.getElementById('search-input').focus();
   }
 
@@ -39,19 +45,21 @@ export default class Searchbar extends Component {
 
   render() {
     const { disabled } = this.props;
+    const inputProps = {
+      startAdornment: (
+        <InputAdornment position="start">
+          <Search />
+        </InputAdornment>
+      ),
+      endAdornment: this.cancelButton()
+    };
     return (
       <TextField id="search-input" placeholder="Search" type="text" variant="outlined"
         value={this.state.searchString}
         onChange={this.handleSearch}
         disabled={disabled}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <Search />
-            </InputAdornment>
-          ),
-          endAdornment: this.cancelButton()
-        }} />
+        InputProps={inputProps}
+      />
     )
   }
 }
