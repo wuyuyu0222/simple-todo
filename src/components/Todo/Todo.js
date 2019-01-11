@@ -2,7 +2,7 @@ import React, { Component, lazy } from 'react'
 import { Grid } from '@material-ui/core';
 import { cloneDeep } from 'lodash';
 
-import { Utils } from '../../utils/common';
+import { Utils, Common } from '../../utils/common';
 import TodoTopbar from './Todo-Topbar';
 import TodoList from './Todo-List';
 import './todo.scss';
@@ -67,7 +67,7 @@ export default class Todo extends Component {
 
   updateCategoryList = () => {
     Utils.getTodoList().then(res => {
-      const categoryList = [...(new Set(res.map(todo => todo.category)))];
+      const categoryList = Common.getDistinctArray(res);
       this.setState({ categoryList: categoryList, upsert: false, loading: false });
     })
   }

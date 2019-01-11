@@ -1,5 +1,11 @@
 import { db } from './database';
 
+export const Common = {
+  getDistinctArray: (array) => {
+    return [...(new Set(array.map(todo => todo.category)))];
+  }
+}
+
 export const Utils = {
   getTodoList: () => {
     return new Promise((resolve, reject) => {
