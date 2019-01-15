@@ -14,7 +14,7 @@ export default class Todo extends Component {
     this.state = {
       todoList: [],
       categoryList: [],
-      searchString: '',
+      keyword: '',
       category: '',
       selectedTodo: {},
       isUpsert: false,
@@ -24,12 +24,6 @@ export default class Todo extends Component {
 
   componentWillMount() {
     this.updateList();
-  }
-
-  searchTodo = (searchString, category) => {
-    Utils.searchTodo(searchString, category).then(res => {
-      this.setState({ searchString: searchString, category: category, todoList: res });
-    })
   }
 
   addTodo = () => {
@@ -61,22 +55,43 @@ export default class Todo extends Component {
   }
 
   updateList = () => {
-    const { searchString, category } = this.state;
+    const { keyword, category } = this.state;
     this.setState({ isLoading: true });
-    const isSearchMode = searchString && category;
+    const isSearchMode = keyword && category;
     if (isSearchMode) {
-      this.searchTodo(searchString, category);
+      this.searchTodo(keyword, category);
     } else {
-      Utils.getTodoList().then(res => {
-        const categoryList = Common.getDistinctArray(res.map(todo => todo.category));
-        this.setState({
-          todoList: res,
-          categoryList: categoryList,
-          isUpsert: false,
-          isLoading: false
-        });
-      });
+      this.getTodoList();
     }
+  }
+
+  getTodoList = () => {
+    Utils.getTodoList().then(res => {
+      const todoList = this.getSortTodoList(res);
+      const categoryList = Common.getDistinctArray(res.map(todo => todo.category));
+      this.setState({
+        todoList: todoList,
+        categoryList: categoryList,
+        isUpsert: false,
+        isLoading: false
+      });
+    });
+  }
+
+  searchTodo = (keyword, category) => {
+    Utils.searchTodo(keyword, category).then(res => {
+      const todoList = this.getSortTodoList(res);
+      this.setState({
+        keyword: keyword,
+        category: category,
+        todoList: todoList
+      });
+    })
+  }
+
+  getSortTodoList = (array) => {
+    array.sort((a, b) => new Date(b.modifiedAt) - new Date(a.modifiedAt))
+    return array;
   }
 
   render() {

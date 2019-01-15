@@ -4,17 +4,19 @@ import { CssBaseline, createMuiTheme, MuiThemeProvider } from '@material-ui/core
 import './App.scss';
 import Container from './layouts/Container';
 import Todo from './components/Todo/Todo';
+import { Environment } from './environment';
 
 class App extends Component {
+  // TODO: logout & user info bar
+  // login error handler
+  // jwt token
+  // login && register with backend
+  // better authorzie service (redux?)
   constructor(props) {
     super(props);
-    this.theme = createMuiTheme({
-      palette: {
-        primary: { main: '#212121' },
-        secondary: { main: '#F44336' }
-      }
-    });
+    this.theme = createMuiTheme(Environment.theme);
   }
+
   render() {
     return (
       <CssBaseline>

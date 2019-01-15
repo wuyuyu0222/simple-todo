@@ -1,105 +1,47 @@
-import { db } from './database';
+import { Environment } from '../environment';
 
 export const Common = {
   getDistinctArray: (array) => {
     return [...(new Set(array))];
+  },
+  isEmptyString: (string) => {
+    if (string) {
+      return false;
+    } else {
+      return true;
+    }
   }
 }
 
 export const Utils = {
   getTodoList: () => {
-    return new Promise((resolve, reject) => {
-      const ran = Math.floor((Math.random() * 100) + 1);
-      if (ran > 1) {
-        setTimeout(() => {
-          resolve(db.todo);
-        }, 500)
-      } else {
-        setTimeout(() => {
-          reject('getTodolist failed');
-        }, 500)
-      }
-    });
+    return fetch(Environment.apiUrl + '/todo').then(res => res.json());
   },
   getTodo: (id) => {
-    return new Promise((resolve, reject) => {
-      const ran = Math.floor((Math.random() * 100) + 1);
-      if (ran > 1) {
-        setTimeout(() => {
-          resolve(db.todo.find(todo => todo.id === id));
-        }, 100)
-      } else {
-        setTimeout(() => {
-          reject('getTodo failed');
-        }, 100)
-      }
-    });
+    return fetch(Environment.apiUrl + `/todo/${id}`).then(res => res.json());
   },
   searchTodo: (keyword, category) => {
-    return new Promise((resolve, reject) => {
-      const ran = Math.floor((Math.random() * 100) + 1);
-      if (ran > 1) {
-        setTimeout(() => {
-          resolve(db.todo.filter(todo => {
-            return (
-              (
-                category === undefined ||
-                category === 'all' ||
-                todo.category === category
-              ) &&
-              (
-                todo.title.includes(keyword) ||
-                todo.category.includes(keyword) ||
-                todo.content.includes(keyword)
-              )
-            )
-          }))
-        })
-      } else {
-        setTimeout(() => {
-          reject('searchTodo failed');
-        }, 200)
-      }
-    });
+    let query = '';
+    if (keyword && category === 'all') {
+      query = `?keyword=${keyword}`;
+    }
+    if (!keyword && (category && category !== 'all')) {
+      query = `?category=${category}`;
+    }
+    if (keyword && (category && category !== 'all')) {
+      query = `?keyword=${keyword}&category=${category}`
+    }
+    return fetch(Environment.apiUrl + `/todo${query}`).then(res => res.json())
   },
   upsertTodo: (todo) => {
-    return new Promise((resolve, reject) => {
-      const ran = Math.floor((Math.random() * 100) + 1);
-      if (ran > 1) {
-        todo.progress = parseInt(todo.progress);
-        const newDate = new Date();
-        todo.modifiedAt = newDate;
-        let targetTodo = db.todo.find(t => t.id === todo.id);
-        if (targetTodo) {
-          targetTodo = Object.assign(targetTodo, todo);
-        } else {
-          todo.id = db.todo.length;
-          todo.createAt = newDate;
-          db.todo.unshift(todo);
-        }
-        setTimeout(() => {
-          resolve();
-        }, 200)
-      } else {
-        setTimeout(() => {
-          reject('upsertTodo failed');
-        }, 200)
-      }
-    });
+    return fetch(Environment.apiUrl + '/todo', {
+      method: 'POST',
+      body: JSON.stringify(todo)
+    }).then(res => res.json())
   },
   deleteTodo: (id) => {
-    return new Promise((resolve, reject) => {
-      const ran = Math.floor((Math.random() * 100) + 1);
-      if (ran > 1) {
-        db.todo = db.todo.filter(todo => todo.id !== id);
-        setTimeout(() => {
-          resolve();
-        }, 200)
-      } else {
-        setTimeout(() => {
-          reject('deleteTodo failed');
-        }, 200)
-      }
-    });
+    return fetch(Environment.apiUrl + `/todo/${id}`, {
+      method: 'DELETE'
+    }).then(res => res.json())
   }
 }

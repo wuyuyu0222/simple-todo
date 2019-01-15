@@ -5,10 +5,10 @@ import { cloneDeep } from 'lodash';
 export default class TodoUpsert extends Component {
   constructor(props) {
     super(props);
-    this.state = this.initState(props);
+    this.state = this.getInitState(props);
   }
 
-  initState = (props) => {
+  getInitState = (props) => {
     return {
       todo: cloneDeep(props.todo),
       valid: {
@@ -28,7 +28,7 @@ export default class TodoUpsert extends Component {
 
   handleCancel = () => {
     const props = this.props;
-    this.setState(this.initState(props));
+    this.setState(this.getInitState(props));
     props.cancelTodo();
   }
 

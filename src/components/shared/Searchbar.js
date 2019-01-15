@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { TextField, IconButton, InputAdornment } from '@material-ui/core';
 import { Search, Cancel } from '@material-ui/icons';
+import { debounce } from 'lodash';
 
 import './shared.scss';
 
@@ -9,19 +10,23 @@ export default class Searchbar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchString: ''
+      keyword: ''
     };
   }
 
   handleSearch = (e) => {
-    const props = this.props;
-    this.setState({ searchString: e.target.value });
-    props.handleSearch(e.target.value);
+    this.setState({ keyword: e.target.value });
+    this.debounceSearch(e.target.value);
   }
+
+  debounceSearch = debounce(value => {
+    const props = this.props;
+    props.handleSearch(value);
+  }, 300)
 
   handleCancel = () => {
     const props = this.props;
-    this.setState({ searchString: '' });
+    this.setState({ keyword: '' });
     props.handleSearch('');
     this.focusSearchInput();
   }
@@ -31,7 +36,7 @@ export default class Searchbar extends Component {
   }
 
   cancelButton = () => {
-    if (this.state.searchString !== '') {
+    if (this.state.keyword !== '') {
       return (
         <InputAdornment position="end">
           <IconButton aria-label="Cancel" className="input-button"
@@ -55,7 +60,7 @@ export default class Searchbar extends Component {
     };
     return (
       <TextField id="search-input" placeholder="Search" type="text" variant="outlined"
-        value={this.state.searchString}
+        value={this.state.keyword}
         onChange={this.handleSearch}
         disabled={disabled}
         InputProps={inputProps}

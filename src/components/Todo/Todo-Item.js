@@ -54,7 +54,7 @@ export default class TodoItem extends Component {
       todo.progress === 0 ? 'ready' :
         todo.progress === 100 ? 'done' : 'unknown';
     const renderContent = todo.content.split('\n').map((todo, idx) => <p key={idx}>{todo}</p>);
-    const modifiedAt = todo.modifiedAt.toLocaleDateString();
+    const modifiedAt = new Date(todo.modifiedAt).toLocaleString();
     return (
       <>
         <Paper>
