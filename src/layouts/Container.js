@@ -1,18 +1,14 @@
 import React, { Component } from 'react'
-import { Grid } from '@material-ui/core';
 
 import './layout.scss';
 
 export default class Container extends Component {
 
   render() {
+    const { children } = this.props;
     return (
       <div className="container">
-        <Grid container spacing={16}>
-          <Grid item xs={12}>
-            {this.props.children}
-          </Grid>
-        </Grid>
+        {children}
       </div>
     )
   }

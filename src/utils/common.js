@@ -14,33 +14,31 @@ export const Common = {
 }
 
 export const Utils = {
-  getTodoList: () => {
-    return fetch(Environment.apiUrl + '/todo').then(res => res.json());
+  getData: (url) => {
+    return fetch(Environment.apiUrl + url).then(res => res.json())
   },
-  getTodo: (id) => {
-    return fetch(Environment.apiUrl + `/todo/${id}`).then(res => res.json());
+  searchData: (url, queryObj) => {
+    let queryString = '';
+    if (Object.keys(queryObj).length > 0) {
+      queryString += '?';
+      Object.keys(queryObj).map(key => {
+        if (queryObj[key]) {
+          queryString += `${key}=${queryObj[key]}&`;
+        }
+        return key
+      })
+    }
+    queryString = queryString.slice(0, -1);
+    return fetch(Environment.apiUrl + url + queryString).then(res => res.json())
   },
-  searchTodo: (keyword, category) => {
-    let query = '';
-    if (keyword && category === 'all') {
-      query = `?keyword=${keyword}`;
-    }
-    if (!keyword && (category && category !== 'all')) {
-      query = `?category=${category}`;
-    }
-    if (keyword && (category && category !== 'all')) {
-      query = `?keyword=${keyword}&category=${category}`
-    }
-    return fetch(Environment.apiUrl + `/todo${query}`).then(res => res.json())
-  },
-  upsertTodo: (todo) => {
-    return fetch(Environment.apiUrl + '/todo', {
+  upsertData: (url, data) => {
+    return fetch(Environment.apiUrl + url, {
       method: 'POST',
-      body: JSON.stringify(todo)
+      body: JSON.stringify(data)
     }).then(res => res.json())
   },
-  deleteTodo: (id) => {
-    return fetch(Environment.apiUrl + `/todo/${id}`, {
+  deleteData: (url, id) => {
+    return fetch(Environment.apiUrl + url + `/${id}`, {
       method: 'DELETE'
     }).then(res => res.json())
   }

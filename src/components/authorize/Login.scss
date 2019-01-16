@@ -1,0 +1,45 @@
+.login-block {
+  width: 280px;
+  height: 320px;
+  margin: 0 auto;
+  margin-top: 25vh;
+  position: relative;
+}
+
+.login-form {
+  padding: 16px;
+  .form-title {
+    text-align: center;
+    font-size: 1.1rem;
+    margin-bottom: 16px;
+  }
+  .form-control {
+    padding: 8px;
+  }
+  .form-error {
+    font-size: 0.9rem;
+    color: #F44336;
+    margin-top: 8px;
+    padding-left: 8px;
+  }
+  .form-action {
+    width: calc(100% - 16px);
+    padding: 8px;
+    position: absolute;
+    bottom: 8px;
+    > button {
+      width: 100%;
+    }
+    .btn-text {
+      width: auto;
+      float: right;
+      font-size: 0.78rem;
+      padding-right: 0;
+      text-transform: none;
+      &:hover {
+        background: none;
+        text-decoration: underline;
+      }
+    }
+  }
+}

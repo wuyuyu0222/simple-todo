@@ -20,6 +20,7 @@ export default class Todo extends Component {
       isUpsert: false,
       isLoading: false,
     };
+    this.apiUrl = '/todo';
   }
 
   componentWillMount() {
@@ -66,7 +67,7 @@ export default class Todo extends Component {
   }
 
   getTodoList = () => {
-    Utils.getTodoList().then(res => {
+    Utils.getData(this.apiUrl).then(res => {
       const todoList = this.getSortTodoList(res);
       const categoryList = Common.getDistinctArray(res.map(todo => todo.category));
       this.setState({
@@ -79,7 +80,11 @@ export default class Todo extends Component {
   }
 
   searchTodo = (keyword, category) => {
-    Utils.searchTodo(keyword, category).then(res => {
+    const query = {
+      keyword: keyword,
+      category: category === 'all' ? '' : category
+    };
+    Utils.searchData(this.apiUrl, query).then(res => {
       const todoList = this.getSortTodoList(res);
       this.setState({
         keyword: keyword,
@@ -94,10 +99,18 @@ export default class Todo extends Component {
     return array;
   }
 
+  upsertTodo = (todo) => {
+    return Utils.upsertData(this.apiUrl, todo);
+  }
+
+  deleteTodo = (id) => {
+    return Utils.deleteData(this.apiUrl, id);
+  }
+
   render() {
     const { todoList, categoryList, selectedTodo, isUpsert, isLoading } = this.state;
     return (
-      <>
+      <div className="content">
         <Grid container spacing={16}>
           <Grid item xs={12}>
             <TodoTopbar
@@ -112,7 +125,7 @@ export default class Todo extends Component {
               list={todoList}
               disabled={isUpsert || isLoading}
               editTodo={this.editTodo}
-              deleteTodo={Utils.deleteTodo}
+              deleteTodo={this.deleteTodo}
               updateList={this.updateList}
             />
           </Grid>
@@ -122,11 +135,11 @@ export default class Todo extends Component {
             open={isUpsert}
             todo={selectedTodo}
             cancelTodo={this.cancelUpsertTodo}
-            upsertTodo={Utils.upsertTodo}
+            upsertTodo={this.upsertTodo}
             updateList={this.updateList}
           />
         }
-      </>
+      </div>
     )
   }
 }
