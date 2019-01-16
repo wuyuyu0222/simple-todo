@@ -21,10 +21,6 @@ class App extends Component {
     })
   }
 
-  componentWillUnmount() {
-    this.unSub();
-  }
-
   render() {
     const { isAuthorized } = this.state;
     const RenderChild = () => {

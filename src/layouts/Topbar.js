@@ -10,16 +10,7 @@ export default class Topbar extends Component {
   constructor(props) {
     super(props);
     this.state = store.getState();
-    this.unSub = store.subscribe(() => {
-      console.log('in sub');
-      this.setState(store.getState());
-    })
-  }
 
-  componentWillUnmount() {
-    // TODO: unsub is useless, not sure why 
-    console.log('unsub');
-    this.unSub();
   }
 
   logout = () => {

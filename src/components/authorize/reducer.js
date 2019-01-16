@@ -4,7 +4,7 @@ import { Common } from "../../utils/common";
 const initialState = {
   isAuthorized: !Common.isEmptyString(localStorage.getItem('user')),
   userName: localStorage.getItem('user'),
-  step: 'login'
+  step: 'login',
 }
 
 

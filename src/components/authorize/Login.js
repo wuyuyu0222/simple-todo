@@ -12,13 +12,6 @@ export default class Login extends Component {
   constructor(props) {
     super(props);
     this.state = store.getState();
-    this.unSub = store.subscribe(() => {
-      this.setState(store.getState());
-    })
-  }
-
-  componentWillUnmount() {
-    this.unSub();
   }
 
   toLogin = () => {
