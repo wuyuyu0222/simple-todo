@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import { Paper, Button, LinearProgress } from '@material-ui/core';
+
 import DefaultDialog from '../shared/Default-Dialog';
 
 export default class TodoItem extends Component {

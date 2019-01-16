@@ -1,10 +1,11 @@
 import React, { Component, lazy } from 'react'
 import { Grid } from '@material-ui/core';
 
-import { Utils, Common } from '../../utils/common';
+import { Common } from '../../services/utils/common';
+import TodoService from '../../services/todo/Todo-Service';
 import TodoTopbar from './Todo-Topbar';
 import TodoList from './Todo-List';
-import './todo.scss';
+import './style/todo.scss';
 
 const TodoUpsert = lazy(() => import('./Todo-Upsert'));
 
@@ -20,7 +21,7 @@ export default class Todo extends Component {
       isUpsert: false,
       isLoading: false,
     };
-    this.apiUrl = '/todo';
+    this.service = new TodoService();
   }
 
   componentWillMount() {
@@ -28,18 +29,9 @@ export default class Todo extends Component {
   }
 
   addTodo = () => {
-    const newTodo = this.setNewTodo();
+    const newTodo = this.service.getEmptyTodo();
+    newTodo.category = this.state.category;
     this.openUpsertTodo(newTodo);
-  }
-
-  setNewTodo = () => {
-    return {
-      title: '',
-      category: this.state.category,
-      progress: 0,
-      content: '',
-      userId: 'jakeWu'
-    }
   }
 
   editTodo = (id) => {
@@ -67,11 +59,10 @@ export default class Todo extends Component {
   }
 
   getTodoList = () => {
-    Utils.getData(this.apiUrl).then(res => {
-      const todoList = this.getSortTodoList(res);
+    this.service.getTodoList().then(res => {
       const categoryList = Common.getDistinctArray(res.map(todo => todo.category));
       this.setState({
-        todoList: todoList,
+        todoList: res,
         categoryList: categoryList,
         isUpsert: false,
         isLoading: false
@@ -80,31 +71,21 @@ export default class Todo extends Component {
   }
 
   searchTodo = (keyword, category) => {
-    const query = {
-      keyword: keyword,
-      category: category === 'all' ? '' : category
-    };
-    Utils.searchData(this.apiUrl, query).then(res => {
-      const todoList = this.getSortTodoList(res);
+    this.service.searchTodo(keyword, category).then(res => {
       this.setState({
         keyword: keyword,
         category: category,
-        todoList: todoList
+        todoList: res
       });
     })
   }
 
-  getSortTodoList = (array) => {
-    array.sort((a, b) => new Date(b.modifiedAt) - new Date(a.modifiedAt))
-    return array;
-  }
-
   upsertTodo = (todo) => {
-    return Utils.upsertData(this.apiUrl, todo);
+    return this.service.upsertTodo(todo);
   }
 
   deleteTodo = (id) => {
-    return Utils.deleteData(this.apiUrl, id);
+    return this.service.deleteTodo(id);
   }
 
   render() {

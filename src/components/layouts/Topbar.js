@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import { AppBar, Button, Grid } from '@material-ui/core';
-
-import { store } from '../utils/store';
-import { logout } from '../components/authorize/actions';
 import { AccountCircleOutlined } from '@material-ui/icons';
+
+import { store } from '../../App-store';
+import { logout } from '../../services/authorize/actions';
+import './style/layout.scss';
+
 
 export default class Topbar extends Component {
 

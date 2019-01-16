@@ -4,11 +4,11 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
 import { Environment } from './environment';
-import { store } from './utils/store';
-import Container from './layouts/Container';
-import Topbar from './layouts/Topbar';
-import Todo from './components/Todo/Todo';
+import { store } from './App-store';
+import Container from './components/layouts/Container';
+import Topbar from './components/layouts/Topbar';
 import Login from './components/authorize/Login';
+import Todo from './components/Todo/Todo';
 import './App.scss';
 
 class App extends Component {

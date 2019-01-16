@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { Paper } from '@material-ui/core';
 
-import { store } from '../../utils/store';
-import { toLogin, toRegister } from './actions';
+import { store } from '../../App-store';
+import { toLogin, toRegister } from '../../services/authorize/actions';
 import LoginForm from './Login-Form';
 import RegisterForm from './Register-Form';
-import './Login.scss';
+import './style/Login.scss';
 
 export default class Login extends Component {
 

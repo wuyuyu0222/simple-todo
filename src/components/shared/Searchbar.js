@@ -3,7 +3,7 @@ import { TextField, IconButton, InputAdornment } from '@material-ui/core';
 import { Search, Cancel } from '@material-ui/icons';
 import { debounce } from 'lodash';
 
-import './shared.scss';
+import './style/shared.scss';
 
 export default class Searchbar extends Component {
 

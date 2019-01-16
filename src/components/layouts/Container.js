@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import './layout.scss';
+import './style/layout.scss';
 
 export default class Container extends Component {
 

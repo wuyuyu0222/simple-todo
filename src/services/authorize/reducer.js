@@ -1,5 +1,5 @@
 import { LOGIN, LOGIN_SUCCESS, LOGIN_FAILED, LOGOUT, REGISTER, REGISTER_SUCCESS, REGISTER_FAILED, REGISTER_CANCEL } from "./actions";
-import { Common } from "../../utils/common";
+import { Common } from "../utils/common";
 
 const initialState = {
   isAuthorized: !Common.isEmptyString(localStorage.getItem('user')),

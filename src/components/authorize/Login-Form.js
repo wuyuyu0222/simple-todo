@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { Grid, TextField, Button } from '@material-ui/core';
 
-import { Common } from '../../utils/common';
-import { store } from '../../utils/store';
-import { login } from './actions';
+import { Common } from '../../services/utils/common';
+import { store } from '../../App-store';
+import { login } from '../../services/authorize/actions';
 
 export default class LoginForm extends Component {
 
