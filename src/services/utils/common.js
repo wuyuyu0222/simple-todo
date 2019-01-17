@@ -1,6 +1,6 @@
-import { Environment } from '../../environment';
+import { environment } from '../../environment';
 
-export const Common = {
+export const common = {
   getDistinctArray: (array) => {
     return [...(new Set(array))];
   },
@@ -13,9 +13,9 @@ export const Common = {
   }
 }
 
-export const Utils = {
+export const utils = {
   getData: (url) => {
-    return fetch(Environment.apiUrl + url).then(res => res.json())
+    return fetch(environment.apiUrl + url).then(res => res.json())
   },
   searchData: (url, queryObj) => {
     let queryString = '';
@@ -29,16 +29,16 @@ export const Utils = {
       })
     }
     queryString = queryString.slice(0, -1);
-    return fetch(Environment.apiUrl + url + queryString).then(res => res.json())
+    return fetch(environment.apiUrl + url + queryString).then(res => res.json())
   },
   upsertData: (url, data) => {
-    return fetch(Environment.apiUrl + url, {
+    return fetch(environment.apiUrl + url, {
       method: 'POST',
       body: JSON.stringify(data)
     }).then(res => res.json())
   },
   deleteData: (url, id) => {
-    return fetch(Environment.apiUrl + url + `/${id}`, {
+    return fetch(environment.apiUrl + url + `/${id}`, {
       method: 'DELETE'
     }).then(res => res.json())
   }

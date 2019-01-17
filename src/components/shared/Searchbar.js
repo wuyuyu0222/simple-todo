@@ -20,14 +20,14 @@ export default class Searchbar extends Component {
   }
 
   debounceSearch = debounce(value => {
-    const props = this.props;
-    props.handleSearch(value);
+    const { handleSearch } = this.props;
+    handleSearch(value);
   }, 300)
 
   handleCancel = () => {
-    const props = this.props;
+    const { handleSearch } = this.props;
     this.setState({ keyword: '' });
-    props.handleSearch('');
+    handleSearch('');
     this.focusSearchInput();
   }
 
@@ -50,6 +50,7 @@ export default class Searchbar extends Component {
 
   render() {
     const { disabled } = this.props;
+    const { keyword } = this.state;
     const inputProps = {
       startAdornment: (
         <InputAdornment position="start">
@@ -60,7 +61,7 @@ export default class Searchbar extends Component {
     };
     return (
       <TextField id="search-input" placeholder="Search" type="text" variant="outlined"
-        value={this.state.keyword}
+        value={keyword}
         onChange={this.handleSearch}
         disabled={disabled}
         InputProps={inputProps}

@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux';
 import { Grid, TextField, Button } from '@material-ui/core';
 
-import { Common } from '../../services/utils/common';
-import { store } from '../../App-store';
-import { register } from '../../services/authorize/actions';
+import { common } from '../../services/utils/common';
+import { mapStateToProps } from '../../App-Store';
+import { register, toLogin } from '../../services/authorize/Auth-Actions';
 
-export default class RegisterForm extends Component {
+class RegisterForm extends Component {
 
   constructor(props) {
     super(props);
@@ -66,8 +67,8 @@ export default class RegisterForm extends Component {
   }
 
   checkValid = (info) => {
-    const isUsernameValid = !Common.isEmptyString(info.username);
-    const isAccountValid = !Common.isEmptyString(info.account);
+    const isUsernameValid = !common.isEmptyString(info.username);
+    const isAccountValid = !common.isEmptyString(info.account);
     const isPasswordValid = this.checkPasswordValid(info.password);
     const isConfirmPasswordValid =
       this.checkConfirmPasswordValid(info.password, info.confirmPassword);
@@ -99,11 +100,10 @@ export default class RegisterForm extends Component {
 
   handleSubmit = (e) => {
     const { username, account, password } = this.state;
+    const { register } = this.props;
     e.preventDefault();
     this.setState({ loading: true });
-    store.dispatch(
-      register(account, password, username)
-    );
+    register(account, password, username);
   }
 
   render() {
@@ -170,3 +170,13 @@ export default class RegisterForm extends Component {
     )
   }
 }
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    register: (account, password, username) =>
+      dispatch(register(account, password, username)),
+    toLogin: () => dispatch(toLogin())
+  }
+};
+
+export default connect(mapStateToProps('auth'), mapDispatchToProps)(RegisterForm)

@@ -1,7 +1,7 @@
 import React, { Component, lazy } from 'react'
 import { Grid } from '@material-ui/core';
 
-import { Common } from '../../services/utils/common';
+import { common } from '../../services/utils/common';
 import TodoService from '../../services/todo/Todo-Service';
 import TodoTopbar from './Todo-Topbar';
 import TodoList from './Todo-List';
@@ -60,7 +60,7 @@ export default class Todo extends Component {
 
   getTodoList = () => {
     this.service.getTodoList().then(res => {
-      const categoryList = Common.getDistinctArray(res.map(todo => todo.category));
+      const categoryList = common.getDistinctArray(res.map(todo => todo.category));
       this.setState({
         todoList: res,
         categoryList: categoryList,

@@ -3,40 +3,18 @@ import { CssBaseline, createMuiTheme, MuiThemeProvider } from '@material-ui/core
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 
-import { Environment } from './environment';
-import { store } from './App-store';
+import { environment } from './environment';
+import { store } from './App-Store';
 import Container from './components/layouts/Container';
-import Topbar from './components/layouts/Topbar';
-import Login from './components/authorize/Login';
-import Todo from './components/Todo/Todo';
 import './App.scss';
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.theme = createMuiTheme(Environment.theme);
-    this.state = store.getState();
-    this.unSub = store.subscribe(() => {
-      this.setState(store.getState());
-    })
+    this.theme = createMuiTheme(environment.theme);
   }
 
   render() {
-    const { isAuthorized } = this.state;
-    const RenderChild = () => {
-      if (isAuthorized) {
-        return (
-          <>
-            <Topbar />
-            <Todo />
-          </>
-        )
-      } else {
-        return (
-          <Login />
-        )
-      }
-    }
     return (
       <CssBaseline>
         <Suspense fallback={<div>Loading</div>}>
@@ -44,7 +22,6 @@ class App extends Component {
             <BrowserRouter>
               <Provider store={store}>
                 <Container>
-                  <RenderChild />
                 </Container>
               </Provider>
             </BrowserRouter>

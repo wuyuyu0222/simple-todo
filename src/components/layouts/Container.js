@@ -1,15 +1,32 @@
-import React, { Component } from 'react'
+import React from 'react'
+import { connect } from 'react-redux';
 
+import { mapStateToProps } from '../../App-Store';
+import Topbar from './Topbar';
+import Todo from '../todo/Todo';
+import Login from '../authorize/Login';
 import './style/layout.scss';
 
-export default class Container extends Component {
-
-  render() {
-    const { children } = this.props;
+const Container = ({ isAuthorized }) => {
+  return (
+    <div className="container">
+      <RenderChild isAuthorized={isAuthorized} />
+    </div>
+  )
+}
+const RenderChild = ({ isAuthorized }) => {
+  if (isAuthorized) {
     return (
-      <div className="container">
-        {children}
-      </div>
+      <>
+        <Topbar />
+        <Todo />
+      </>
+    )
+  } else {
+    return (
+      <Login />
     )
   }
 }
+
+export default connect(mapStateToProps('auth'))(Container)
