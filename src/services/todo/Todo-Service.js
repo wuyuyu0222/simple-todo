@@ -1,4 +1,4 @@
-import { utils } from "../utils/common";
+import UtilService from "../utils/Util-Service";
 
 export default class TodoService {
 
@@ -15,7 +15,7 @@ export default class TodoService {
   }
 
   static getTodoList() {
-    return utils.getData(this.apiUrl).then(res => {
+    return UtilService.getData(this.apiUrl).then(res => {
       res.map(todo => todo.progress = +todo.progress);
       return this.getSortTodoList(res);
     });
@@ -26,7 +26,7 @@ export default class TodoService {
       keyword: keyword,
       category: category === 'all' ? '' : category
     };
-    return utils.searchData(this.apiUrl, query).then(res => {
+    return UtilService.searchData(this.apiUrl, query).then(res => {
       res.map(todo => todo.progress = +todo.progress);
       return this.getSortTodoList(res);
     })
@@ -38,10 +38,10 @@ export default class TodoService {
   }
 
   static upsertTodo(todo) {
-    return utils.upsertData(this.apiUrl, todo);
+    return UtilService.upsertData(this.apiUrl, todo);
   }
 
   static deleteTodo(id) {
-    return utils.deleteData(this.apiUrl, id);
+    return UtilService.deleteData(this.apiUrl, id);
   }
 }

@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import { Paper, Button, LinearProgress } from '@material-ui/core';
 
-import { mapStateToProps } from '../../App-Store';
 import TodoService from '../../services/todo/Todo-Service';
+import { mapStateToProps } from '../../App-Store';
 import * as actions from '../../services/todo/Todo-Actions';
 import DefaultDialog from '../shared/Default-Dialog';
 

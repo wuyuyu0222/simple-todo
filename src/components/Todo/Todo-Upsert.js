@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { Dialog, Grid, Paper, TextField, Button } from '@material-ui/core';
 import { cloneDeep } from 'lodash';
 
-import { mapStateToProps } from '../../App-Store';
 import TodoService from '../../services/todo/Todo-Service';
+import { mapStateToProps } from '../../App-Store';
 import * as actions from '../../services/todo/Todo-Actions';
 
 class TodoUpsert extends Component {

@@ -1,8 +1,8 @@
 import { TO_LOGIN, LOGIN_SUCCESS, LOGOUT, TO_REGISTER, REGISTER_SUCCESS } from "./Auth-Actions";
-import { common } from "../utils/common";
+import UtilService from "../utils/Util-Service";
 
 const initialState = {
-  isAuthorized: !common.isEmptyString(localStorage.getItem('user')),
+  isAuthorized: !UtilService.isEmptyString(localStorage.getItem('user')),
   tempAccount: localStorage.getItem('tempAccount'),
   username: localStorage.getItem('user'),
   step: 'login',

@@ -1,23 +1,30 @@
 import { environment } from '../../environment';
 
-export const common = {
-  getDistinctArray: (array) => {
+
+export default class UtilService {
+
+  static getDistinctArray(array) {
     return [...(new Set(array))];
-  },
-  isEmptyString: (string) => {
+  }
+
+  static isEmptyString(string) {
     if (string) {
       return false;
     } else {
       return true;
     }
   }
-}
 
-export const utils = {
-  getData: (url) => {
+  static getData(url) {
     return fetch(environment.apiUrl + url).then(res => res.json())
-  },
-  searchData: (url, queryObj) => {
+  }
+
+  static searchData(url, queryObj) {
+    const queryString = this.getQueryString(queryObj);
+    return fetch(environment.apiUrl + url + queryString).then(res => res.json())
+  }
+
+  getQueryString(queryObj) {
     let queryString = '';
     if (Object.keys(queryObj).length > 0) {
       queryString += '?';
@@ -29,17 +36,20 @@ export const utils = {
       })
     }
     queryString = queryString.slice(0, -1);
-    return fetch(environment.apiUrl + url + queryString).then(res => res.json())
-  },
-  upsertData: (url, data) => {
+    return queryString
+  }
+
+  static upsertData(url, data) {
     return fetch(environment.apiUrl + url, {
       method: 'POST',
       body: JSON.stringify(data)
     }).then(res => res.json())
-  },
-  deleteData: (url, id) => {
+  }
+
+  static deleteData(url, id) {
     return fetch(environment.apiUrl + url + `/${id}`, {
       method: 'DELETE'
     }).then(res => res.json())
   }
+
 }

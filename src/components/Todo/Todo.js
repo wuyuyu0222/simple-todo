@@ -2,10 +2,10 @@ import React, { Component, lazy } from 'react'
 import { connect } from 'react-redux';
 import { Grid } from '@material-ui/core';
 
-import { common } from '../../services/utils/common';
+import UtilService from '../../services/utils/Util-Service';
+import TodoService from '../../services/todo/Todo-Service';
 import { mapStateToProps } from '../../App-Store';
 import * as actions from '../../services/todo/Todo-Actions';
-import TodoService from '../../services/todo/Todo-Service';
 import TodoTopbar from './Todo-Topbar';
 import TodoList from './Todo-List';
 import './style/todo.scss';
@@ -38,7 +38,7 @@ class Todo extends Component {
   getTodoList = () => {
     const { updateTodoList, updateCategoryList } = this.props;
     TodoService.getTodoList().then(res => {
-      const categoryList = common.getDistinctArray(res.map(todo => todo.category));
+      const categoryList = UtilService.getDistinctArray(res.map(todo => todo.category));
       updateTodoList(res);
       updateCategoryList(categoryList);
     });

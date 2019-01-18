@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { Grid, TextField, Button } from '@material-ui/core';
 
-import { common } from '../../services/utils/common';
-import { mapStateToProps } from '../../App-Store';
+import UtilService from '../../services/utils/Util-Service';
 import AuthService from '../../services/authorize/Auth-Service';
+import { mapStateToProps } from '../../App-Store';
 import * as actions from '../../services/authorize/Auth-Actions';
 
 class LoginForm extends Component {
@@ -54,8 +54,8 @@ class LoginForm extends Component {
   }
 
   checkValid = (info) => {
-    const isAccountValid = !common.isEmptyString(info.account);
-    const isPasswordValid = !common.isEmptyString(info.password);
+    const isAccountValid = !UtilService.isEmptyString(info.account);
+    const isPasswordValid = !UtilService.isEmptyString(info.password);
     return {
       form: isAccountValid && isPasswordValid,
       account: isAccountValid,
