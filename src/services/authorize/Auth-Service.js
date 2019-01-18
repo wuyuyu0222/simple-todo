@@ -1,5 +1,6 @@
 export default class AuthService {
-  login = (account, password) => {
+
+  static login = (account, password) => {
     return new Promise((resolve, reject) => {
       if (account && password) {
         const username = 'jakeWu';
@@ -12,14 +13,14 @@ export default class AuthService {
     });
   }
 
-  logout = () => {
+  static logout = () => {
     return new Promise((resolve, reject) => {
       localStorage.removeItem('user');
       resolve();
     });
   }
 
-  register = (username, account, password) => {
+  static register = (username, account, password) => {
     return new Promise((resolve, reject) => {
       if (username && account && password) {
         localStorage.setItem('tempAccount', account);

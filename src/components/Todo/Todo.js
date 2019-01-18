@@ -13,10 +13,6 @@ import './style/todo.scss';
 const TodoUpsert = lazy(() => import('./Todo-Upsert'));
 
 class Todo extends Component {
-  constructor(props) {
-    super(props);
-    this.service = new TodoService();
-  }
 
   componentWillMount() {
     this.updateList();
@@ -41,7 +37,7 @@ class Todo extends Component {
 
   getTodoList = () => {
     const { updateTodoList, updateCategoryList } = this.props;
-    this.service.getTodoList().then(res => {
+    TodoService.getTodoList().then(res => {
       const categoryList = common.getDistinctArray(res.map(todo => todo.category));
       updateTodoList(res);
       updateCategoryList(categoryList);
@@ -50,17 +46,9 @@ class Todo extends Component {
 
   searchTodo = (keyword, category) => {
     const { updateTodoList } = this.props;
-    this.service.searchTodo(keyword, category).then(res => {
+    TodoService.searchTodo(keyword, category).then(res => {
       updateTodoList(res);
     })
-  }
-
-  upsertTodo = (todo) => {
-    return this.service.upsertTodo(todo);
-  }
-
-  deleteTodo = (id) => {
-    return this.service.deleteTodo(id);
   }
 
   render() {
@@ -75,14 +63,12 @@ class Todo extends Component {
           </Grid>
           <Grid item xs={12}>
             <TodoList
-              deleteTodo={this.deleteTodo}
               updateList={this.updateList}
             />
           </Grid>
         </Grid>
         {isUpsert &&
           <TodoUpsert
-            upsertTodo={this.upsertTodo}
             updateList={this.updateList}
           />
         }

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Grid, Button, Select, MenuItem } from '@material-ui/core';
 
 import { mapStateToProps } from '../../App-Store';
+import TodoService from '../../services/todo/Todo-Service';
 import * as actions from '../../services/todo/Todo-Actions';
 import Searchbar from '../shared/Searchbar';
 
@@ -19,19 +20,9 @@ class TodoTopbar extends Component {
   addTodo = () => {
     const { openUpsertTodo } = this.props;
     const { category } = this.state;
-    const newTodo = this.getEmptyTodo();
+    const newTodo = TodoService.getEmptyTodo();
     newTodo.category = category === 'all' ? '' : category;
     openUpsertTodo(newTodo);
-  }
-
-  getEmptyTodo() {
-    return {
-      title: '',
-      category: '',
-      progress: 0,
-      content: '',
-      userId: 'jakeWu'
-    }
   }
 
   handleSearch = (value) => {

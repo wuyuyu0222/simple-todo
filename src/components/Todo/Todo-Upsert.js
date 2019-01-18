@@ -4,6 +4,7 @@ import { Dialog, Grid, Paper, TextField, Button } from '@material-ui/core';
 import { cloneDeep } from 'lodash';
 
 import { mapStateToProps } from '../../App-Store';
+import TodoService from '../../services/todo/Todo-Service';
 import * as actions from '../../services/todo/Todo-Actions';
 
 class TodoUpsert extends Component {
@@ -68,10 +69,10 @@ class TodoUpsert extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { upsertTodo, updateList, closeUpsertTodo } = this.props;
+    const { updateList, closeUpsertTodo } = this.props;
     const { todo } = this.state;
     this.setState({ loading: true, message: '' });
-    upsertTodo(todo).then(res => {
+    TodoService.upsertTodo(todo).then(res => {
       this.setState({ loading: false, message: 'submit success' });
       setTimeout(() => {
         updateList();

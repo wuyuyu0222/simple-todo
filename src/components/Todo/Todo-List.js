@@ -29,13 +29,12 @@ class TodoList extends Component {
 }
 
 const RenderChild = ({ props }) => {
-  const { todoList, deleteTodo, updateList } = props;
+  const { todoList, updateList } = props;
   if (todoList.length > 0) {
     return todoList.map(item => (
       <Grid item xs={12} key={item.id}>
         <TodoItem
           todo={item}
-          deleteTodo={deleteTodo}
           updateList={updateList}
         />
       </Grid>

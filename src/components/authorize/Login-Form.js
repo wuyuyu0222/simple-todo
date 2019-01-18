@@ -4,6 +4,7 @@ import { Grid, TextField, Button } from '@material-ui/core';
 
 import { common } from '../../services/utils/common';
 import { mapStateToProps } from '../../App-Store';
+import AuthService from '../../services/authorize/Auth-Service';
 import * as actions from '../../services/authorize/Auth-Actions';
 
 class LoginForm extends Component {
@@ -64,10 +65,10 @@ class LoginForm extends Component {
 
   handleSubmit = (e) => {
     const { account, password } = this.state;
-    const { login, loginSuccess } = this.props;
+    const { loginSuccess } = this.props;
     e.preventDefault();
     this.setState({ loading: true });
-    login(account, password).then(res => {
+    AuthService.login(account, password).then(res => {
       loginSuccess(res);
     })
   }

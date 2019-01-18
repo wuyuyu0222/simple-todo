@@ -4,6 +4,7 @@ import { PropTypes } from 'prop-types';
 import { Paper, Button, LinearProgress } from '@material-ui/core';
 
 import { mapStateToProps } from '../../App-Store';
+import TodoService from '../../services/todo/Todo-Service';
 import * as actions from '../../services/todo/Todo-Actions';
 import DefaultDialog from '../shared/Default-Dialog';
 
@@ -36,9 +37,9 @@ class TodoItem extends Component {
   }
 
   handleDelete = () => {
-    const { loading, todo, deleteTodo, updateList } = this.props;
+    const { loading, todo, updateList } = this.props;
     loading();
-    deleteTodo(todo.id).then(res => {
+    TodoService.deleteTodo(todo.id).then(res => {
       this.closeDeleteDialog();
       updateList();
     })
