@@ -13,6 +13,7 @@ export default class TodoService {
 
   getTodoList = () => {
     return utils.getData(this.apiUrl).then(res => {
+      res.map(todo => todo.progress = +todo.progress);
       return this.getSortTodoList(res);
     });
   }
