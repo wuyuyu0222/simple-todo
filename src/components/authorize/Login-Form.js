@@ -4,18 +4,18 @@ import { Grid, TextField, Button } from '@material-ui/core';
 
 import { common } from '../../services/utils/common';
 import { mapStateToProps } from '../../App-Store';
-import { login, toRegister } from '../../services/authorize/Auth-Actions';
+import * as actions from '../../services/authorize/Auth-Actions';
 
 class LoginForm extends Component {
 
   constructor(props) {
     super(props);
-    this.state = this.getInitState();
+    this.state = this.getInitState(props);
   }
 
-  getInitState = () => {
+  getInitState = (props) => {
     return {
-      account: '',
+      account: props.tempAccount,
       password: '',
       valid: {
         form: false,
@@ -64,10 +64,12 @@ class LoginForm extends Component {
 
   handleSubmit = (e) => {
     const { account, password } = this.state;
-    const { login } = this.props;
+    const { login, loginSuccess } = this.props;
     e.preventDefault();
     this.setState({ loading: true });
-    login(account, password);
+    login(account, password).then(res => {
+      loginSuccess(res);
+    })
   }
 
   render() {
@@ -119,8 +121,9 @@ class LoginForm extends Component {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    login: (account, password) => dispatch(login(account, password)),
-    toRegister: () => dispatch(toRegister())
+    loginSuccess: (username) =>
+      dispatch(actions.loginSuccess(username)),
+    toRegister: () => dispatch(actions.toRegister())
   }
 };
 

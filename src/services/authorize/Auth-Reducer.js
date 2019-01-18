@@ -1,8 +1,9 @@
-import { LOGIN, LOGIN_SUCCESS, LOGIN_FAILED, LOGOUT, REGISTER, REGISTER_SUCCESS, REGISTER_FAILED, REGISTER_CANCEL } from "./Auth-Actions";
+import { TO_LOGIN, LOGIN_SUCCESS, LOGOUT, TO_REGISTER, REGISTER_SUCCESS } from "./Auth-Actions";
 import { common } from "../utils/common";
 
 const initialState = {
   isAuthorized: !common.isEmptyString(localStorage.getItem('user')),
+  tempAccount: localStorage.getItem('tempAccount'),
   username: localStorage.getItem('user'),
   step: 'login',
 }
@@ -11,20 +12,16 @@ const initialState = {
 export const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOGIN_SUCCESS:
-      const username = 'jake';
-      localStorage.setItem('user', username);
       return {
         ...state,
         isAuthorized: true,
-        username: username,
+        tempAccount: action.tempAccount,
+        username: action.username,
         step: 'loggedIn'
       }
 
-    case LOGIN:
-    case LOGIN_FAILED:
+    case TO_LOGIN:
     case LOGOUT:
-      //TODO: remove this (reducer is pure function)
-      localStorage.removeItem('user');
       return {
         ...state,
         isAuthorized: false,
@@ -32,14 +29,18 @@ export const authReducer = (state = initialState, action) => {
         step: 'login'
       }
 
-    case REGISTER:
-    case REGISTER_FAILED:
-      return { ...state, step: 'register' }
+    case TO_REGISTER:
+      return {
+        ...state,
+        step: 'register'
+      }
 
     case REGISTER_SUCCESS:
-    case REGISTER_CANCEL:
-      state.step = 'login'
-      return { ...state, step: 'login' }
+      return {
+        ...state,
+        step: 'login',
+        tempAccount: action.tempAccount
+      }
 
     default:
       return state
