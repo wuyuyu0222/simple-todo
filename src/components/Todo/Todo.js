@@ -52,7 +52,6 @@ class Todo extends Component {
   }
 
   render() {
-    const { isUpsert } = this.props;
     return (
       <div className="content">
         <Grid container spacing={16}>
@@ -67,11 +66,9 @@ class Todo extends Component {
             />
           </Grid>
         </Grid>
-        {isUpsert &&
-          <TodoUpsert
-            updateList={this.updateList}
-          />
-        }
+        <TodoUpsert
+          updateList={this.updateList}
+        />
       </div>
     )
   }

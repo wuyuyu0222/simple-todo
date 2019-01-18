@@ -31,13 +31,15 @@ class TodoUpsert extends Component {
     };
   }
 
+  componentWillReceiveProps(props) {
+    this.setState({ todo: cloneDeep(props.selectedTodo) })
+  }
+
   handleCancel = () => {
     const { selectedTodo, closeUpsertTodo } = this.props;
     this.setState(this.getInitState(selectedTodo));
     closeUpsertTodo();
   }
-
-
 
   handleInput = (e) => {
     const { todo, dirty } = this.state;
