@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux';
 import { Grid, Button, Select, MenuItem } from '@material-ui/core';
 
+import { mapStateToProps } from '../../App-Store';
+import * as actions from '../../services/todo/Todo-Actions';
 import Searchbar from '../shared/Searchbar';
 
-export default class TodoTopbar extends Component {
+class TodoTopbar extends Component {
 
   constructor(props) {
     super(props);
@@ -13,22 +16,42 @@ export default class TodoTopbar extends Component {
     }
   }
 
+  addTodo = () => {
+    const { openUpsertTodo } = this.props;
+    const { category } = this.state;
+    const newTodo = this.getEmptyTodo();
+    newTodo.category = category === 'all' ? '' : category;
+    openUpsertTodo(newTodo);
+  }
+
+  getEmptyTodo() {
+    return {
+      title: '',
+      category: '',
+      progress: 0,
+      content: '',
+      userId: 'jakeWu'
+    }
+  }
+
   handleSearch = (value) => {
-    const props = this.props;
+    const { searchTodo } = this.props;
+    const { category } = this.state;
     this.setState({ searchString: value });
-    props.searchTodo(value, this.state.category);
+    searchTodo(value, category);
   }
 
   handleSelect = (e) => {
-    const props = this.props;
+    const { searchTodo } = this.props;
+    const { searchString } = this.state;
     this.setState({ category: e.target.value });
-    props.searchTodo(this.state.searchString, e.target.value);
+    searchTodo(searchString, e.target.value);
   }
 
   render() {
-    const { list, addTodo, disabled } = this.props;
+    const { categoryList, isLoading } = this.props;
     const { category } = this.state;
-    const renderItems = list.map((item, idx) => (
+    const renderItems = categoryList.map((item, idx) => (
       <MenuItem key={idx} value={item}>
         {item ? item : <em>(empty category)</em>}
       </MenuItem>
@@ -39,7 +62,7 @@ export default class TodoTopbar extends Component {
           <div className="todo-search">
             <Searchbar
               handleSearch={this.handleSearch}
-              disabled={disabled}
+              disabled={isLoading}
             />
           </div>
         </Grid>
@@ -48,7 +71,7 @@ export default class TodoTopbar extends Component {
             <Select id="goto-select" fullWidth
               value={category}
               onChange={this.handleSelect}
-              disabled={disabled}
+              disabled={isLoading}
             >
               <MenuItem value={'all'}>all category</MenuItem>
               {renderItems}
@@ -58,8 +81,8 @@ export default class TodoTopbar extends Component {
         <Grid item xs={3}>
           <div className="text-right">
             <Button className="sentence-button" variant='text'
-              disabled={disabled}
-              onClick={addTodo}>
+              disabled={isLoading}
+              onClick={this.addTodo}>
               add new todo
             </Button>
           </div>
@@ -68,3 +91,11 @@ export default class TodoTopbar extends Component {
     )
   }
 }
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    openUpsertTodo: (todo) => dispatch(actions.openUpsertTodo(todo))
+  }
+};
+
+export default connect(mapStateToProps('todo'), mapDispatchToProps)(TodoTopbar)

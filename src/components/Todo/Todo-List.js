@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types'
 import { Grid } from '@material-ui/core';
 
+import { mapStateToProps } from '../../App-Store';
 import TodoItem from './Todo-Item';
 
-export default class TodoList extends Component {
+class TodoList extends Component {
   static propTypes = {
     list: PropTypes.array,
     disabled: PropTypes.bool,
@@ -17,47 +19,38 @@ export default class TodoList extends Component {
     this.state = { isDeleteDialogOpen: false };
   }
 
-  onDeleteDialogOpen = () => {
-    this.setState({ isDeleteDialogOpen: true });
-  }
-
-  onDeleteDialogClose = () => {
-    this.setState({ isDeleteDialogOpen: false });
-  }
-
   render() {
-    const { list, disabled, editTodo, deleteTodo, updateList } = this.props;
-    const { isDeleteDialogOpen } = this.state;
-    let renderList;
-    if (list.length > 0) {
-      renderList = list.map(item => (
-        <Grid item xs={12} key={item.id}>
-          <TodoItem
-            todo={item}
-            disabled={disabled || isDeleteDialogOpen}
-            editTodo={editTodo}
-            deleteTodo={deleteTodo}
-            updateList={updateList}
-            onDeleteDialogOpen={this.onDeleteDialogOpen}
-            onDeleteDialogClose={this.onDeleteDialogClose}
-          />
-        </Grid>
-      ))
-    } else {
-      renderList = (
-        <Grid item xs={12}>
-          <div className="todo-block">
-            <div className="todo-empty">
-              <span>your todo list is empty</span>
-            </div>
-          </div>
-        </Grid>
-      )
-    }
     return (
       <Grid container spacing={16}>
-        {renderList}
+        <RenderChild props={this.props} />
       </Grid>
     );
   }
 }
+
+const RenderChild = ({ props }) => {
+  const { todoList, deleteTodo, updateList } = props;
+  if (todoList.length > 0) {
+    return todoList.map(item => (
+      <Grid item xs={12} key={item.id}>
+        <TodoItem
+          todo={item}
+          deleteTodo={deleteTodo}
+          updateList={updateList}
+        />
+      </Grid>
+    ));
+  } else {
+    return (
+      <Grid item xs={12}>
+        <div className="todo-block">
+          <div className="todo-empty">
+            <span>your todo list is empty</span>
+          </div>
+        </div>
+      </Grid>
+    )
+  }
+}
+
+export default connect(mapStateToProps('todo'))(TodoList)

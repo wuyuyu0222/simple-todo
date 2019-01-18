@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
 import { Paper, Button, LinearProgress } from '@material-ui/core';
 
+import { mapStateToProps } from '../../App-Store';
+import * as actions from '../../services/todo/Todo-Actions';
 import DefaultDialog from '../shared/Default-Dialog';
 
-export default class TodoItem extends Component {
+class TodoItem extends Component {
   static propTypes = {
     todo: PropTypes.object,
     disabled: PropTypes.bool,
@@ -16,41 +19,36 @@ export default class TodoItem extends Component {
     super(props);
     this.state = {
       isDeleteDialogOpen: false,
-      loading: false
     };
   }
 
   openDeleteDialog = () => {
-    const props = this.props;
     this.setState({ isDeleteDialogOpen: true });
-    props.onDeleteDialogOpen();
   }
 
   closeDeleteDialog = () => {
-    const props = this.props;
     this.setState({ isDeleteDialogOpen: false });
-    props.onDeleteDialogClose();
   }
 
   handleEdit = () => {
-    const props = this.props;
-    props.editTodo(props.todo.id);
+    const { todo, openUpsertTodo } = this.props;
+    openUpsertTodo(todo);
   }
 
   handleDelete = () => {
-    const props = this.props;
-    this.setState({ loading: true });
-    props.deleteTodo(props.todo.id).then(res => {
+    const { loading, todo, deleteTodo, updateList } = this.props;
+    loading();
+    deleteTodo(todo.id).then(res => {
       this.closeDeleteDialog();
-      props.updateList();
+      updateList();
     })
   }
 
 
 
   render() {
-    const { todo, disabled, } = this.props;
-    const { loading, isDeleteDialogOpen } = this.state;
+    const { todo, isLoading, } = this.props;
+    const { isDeleteDialogOpen } = this.state;
     const status = (todo.progress > 0 && todo.progress < 100) ? todo.progress + '%' :
       todo.progress === 0 ? 'ready' :
         todo.progress === 100 ? 'done' : 'unknown';
@@ -72,9 +70,9 @@ export default class TodoItem extends Component {
             <div className="todo-content">{renderContent}</div>
             <div className="todo-author">{todo.userId} at {modifiedAt}</div>
             <div className="todo-action">
-              <Button disabled={disabled} onClick={this.handleEdit}>Edit</Button>
+              <Button disabled={isLoading} onClick={this.handleEdit}>Edit</Button>
               <Button color="secondary"
-                disabled={disabled}
+                disabled={isLoading}
                 onClick={this.openDeleteDialog}>Delete</Button>
             </div>
           </div>
@@ -82,7 +80,7 @@ export default class TodoItem extends Component {
         <DefaultDialog
           title={'Confirm to delete this todo?'}
           content={`todo title "${todo.title}"`}
-          disabled={loading}
+          disabled={isLoading}
           open={isDeleteDialogOpen}
           handleCancel={this.closeDeleteDialog}
           handleConfirm={this.handleDelete}
@@ -91,3 +89,12 @@ export default class TodoItem extends Component {
     )
   }
 }
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    loading: () => dispatch(actions.loading()),
+    openUpsertTodo: (todo) => dispatch(actions.openUpsertTodo(todo))
+  }
+}
+
+export default connect(mapStateToProps('todo'), mapDispatchToProps)(TodoItem)

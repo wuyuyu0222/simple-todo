@@ -1,7 +1,10 @@
 import React, { Component, lazy } from 'react'
+import { connect } from 'react-redux';
 import { Grid } from '@material-ui/core';
 
 import { common } from '../../services/utils/common';
+import { mapStateToProps } from '../../App-Store';
+import * as actions from '../../services/todo/Todo-Actions';
 import TodoService from '../../services/todo/Todo-Service';
 import TodoTopbar from './Todo-Topbar';
 import TodoList from './Todo-List';
@@ -9,18 +12,9 @@ import './style/todo.scss';
 
 const TodoUpsert = lazy(() => import('./Todo-Upsert'));
 
-export default class Todo extends Component {
+class Todo extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      todoList: [],
-      categoryList: [],
-      keyword: '',
-      category: '',
-      selectedTodo: {},
-      isUpsert: false,
-      isLoading: false,
-    };
     this.service = new TodoService();
   }
 
@@ -28,28 +22,15 @@ export default class Todo extends Component {
     this.updateList();
   }
 
-  addTodo = () => {
-    const newTodo = this.service.getEmptyTodo();
-    newTodo.category = this.state.category;
-    this.openUpsertTodo(newTodo);
-  }
-
   editTodo = (id) => {
-    const todo = this.state.todoList.find(todo => todo.id === id);
-    this.openUpsertTodo(todo);
-  }
-
-  openUpsertTodo = (todo) => {
-    this.setState({ selectedTodo: todo, isUpsert: true });
-  }
-
-  cancelUpsertTodo = () => {
-    this.setState({ isUpsert: false });
+    const { todoList, openUpsertTodo } = this.props;
+    const todo = todoList.find(todo => todo.id === id);
+    openUpsertTodo(todo);
   }
 
   updateList = () => {
-    const { keyword, category } = this.state;
-    this.setState({ isLoading: true });
+    const { loading, keyword, category } = this.props;
+    loading();
     const isSearchMode = keyword && category;
     if (isSearchMode) {
       this.searchTodo(keyword, category);
@@ -59,24 +40,18 @@ export default class Todo extends Component {
   }
 
   getTodoList = () => {
+    const { updateTodoList, updateCategoryList } = this.props;
     this.service.getTodoList().then(res => {
       const categoryList = common.getDistinctArray(res.map(todo => todo.category));
-      this.setState({
-        todoList: res,
-        categoryList: categoryList,
-        isUpsert: false,
-        isLoading: false
-      });
+      updateTodoList(res);
+      updateCategoryList(categoryList);
     });
   }
 
   searchTodo = (keyword, category) => {
+    const { updateTodoList } = this.props;
     this.service.searchTodo(keyword, category).then(res => {
-      this.setState({
-        keyword: keyword,
-        category: category,
-        todoList: res
-      });
+      updateTodoList(res);
     })
   }
 
@@ -89,23 +64,17 @@ export default class Todo extends Component {
   }
 
   render() {
-    const { todoList, categoryList, selectedTodo, isUpsert, isLoading } = this.state;
+    const { isUpsert } = this.props;
     return (
       <div className="content">
         <Grid container spacing={16}>
           <Grid item xs={12}>
             <TodoTopbar
-              list={categoryList}
-              disabled={isLoading}
               searchTodo={this.searchTodo}
-              addTodo={this.addTodo}
             />
           </Grid>
           <Grid item xs={12}>
             <TodoList
-              list={todoList}
-              disabled={isUpsert || isLoading}
-              editTodo={this.editTodo}
               deleteTodo={this.deleteTodo}
               updateList={this.updateList}
             />
@@ -113,9 +82,6 @@ export default class Todo extends Component {
         </Grid>
         {isUpsert &&
           <TodoUpsert
-            open={isUpsert}
-            todo={selectedTodo}
-            cancelTodo={this.cancelUpsertTodo}
             upsertTodo={this.upsertTodo}
             updateList={this.updateList}
           />
@@ -124,3 +90,16 @@ export default class Todo extends Component {
     )
   }
 }
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    loading: () => dispatch(actions.loading()),
+    openUpsertTodo: (todo) => dispatch(actions.openUpsertTodo(todo)),
+    closeUpsertTodo: () => dispatch(actions.closeUpsertTodo()),
+    updateTodoList: (todoList) => dispatch(actions.updateTodoList(todoList)),
+    updateCategoryList: (categoryList) =>
+      dispatch(actions.updateCategoryList(categoryList))
+  }
+}
+
+export default connect(mapStateToProps('todo'), mapDispatchToProps)(Todo)

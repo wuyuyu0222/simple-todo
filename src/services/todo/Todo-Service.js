@@ -6,16 +6,6 @@ export default class TodoService {
     this.apiUrl = "/todo";
   }
 
-  getEmptyTodo = () => {
-    return {
-      title: '',
-      category: '',
-      progress: 0,
-      content: '',
-      userId: 'jakeWu'
-    }
-  }
-
   getSortTodoList = (todoList) => {
     todoList.sort((a, b) => new Date(b.modifiedAt) - new Date(a.modifiedAt))
     return todoList;
