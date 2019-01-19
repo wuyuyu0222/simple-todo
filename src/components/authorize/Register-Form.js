@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux';
 import { Grid, TextField, Button } from '@material-ui/core';
 
 import UtilService from '../../services/utils/Util-Service';
 import AuthService from '../../services/authorize/Auth-Service';
+import { mapStateToProps } from '../../App-Store';
+import * as actions from '../../services/authorize/Auth-Actions';
 
-export default class RegisterForm extends Component {
+class RegisterForm extends Component {
 
   constructor(props) {
     super(props);
@@ -98,11 +101,11 @@ export default class RegisterForm extends Component {
 
   handleSubmit = (e) => {
     const { username, account, password } = this.state;
-    const { toLogin } = this.props;
+    const { registerSuccess } = this.props;
     e.preventDefault();
     this.setState({ loading: true });
     AuthService.register(username, account, password).then(res => {
-      toLogin();
+      registerSuccess(res);
     });
   }
 
@@ -170,3 +173,13 @@ export default class RegisterForm extends Component {
     )
   }
 }
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    registerSuccess: (account) =>
+      dispatch(actions.registerSuccess(account)),
+    toLogin: () => dispatch(actions.toLogin())
+  }
+};
+
+export default connect(mapStateToProps('auth'), mapDispatchToProps)(RegisterForm)

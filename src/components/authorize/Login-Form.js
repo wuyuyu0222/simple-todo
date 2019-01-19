@@ -1,19 +1,22 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux';
 import { Grid, TextField, Button } from '@material-ui/core';
 
 import UtilService from '../../services/utils/Util-Service';
+import AuthService from '../../services/authorize/Auth-Service';
+import { mapStateToProps } from '../../App-Store';
+import * as actions from '../../services/authorize/Auth-Actions';
 
-export default class LoginForm extends Component {
+class LoginForm extends Component {
 
   constructor(props) {
     super(props);
-    this.state = this.getInitState();
+    this.state = this.getInitState(props);
   }
 
-  getInitState = () => {
-    const tempAccount = localStorage.getItem('tempAccount');
+  getInitState = (props) => {
     return {
-      account: tempAccount,
+      account: props.tempAccount,
       password: '',
       valid: {
         form: false,
@@ -61,11 +64,13 @@ export default class LoginForm extends Component {
   }
 
   handleSubmit = (e) => {
-    const { login } = this.props;
     const { account, password } = this.state;
+    const { loginSuccess } = this.props;
     e.preventDefault();
     this.setState({ loading: true });
-    login(account, password);
+    AuthService.login(account, password).then(res => {
+      loginSuccess(res);
+    })
   }
 
   render() {
@@ -114,3 +119,13 @@ export default class LoginForm extends Component {
     )
   }
 }
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    loginSuccess: (username) =>
+      dispatch(actions.loginSuccess(username)),
+    toRegister: () => dispatch(actions.toRegister())
+  }
+};
+
+export default connect(mapStateToProps('auth'), mapDispatchToProps)(LoginForm)
