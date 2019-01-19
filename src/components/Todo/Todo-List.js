@@ -1,12 +1,10 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types'
 import { Grid } from '@material-ui/core';
 
-import { mapStateToProps } from '../../App-Store';
 import TodoItem from './Todo-Item';
 
-class TodoList extends Component {
+export default class TodoList extends Component {
   static propTypes = {
     list: PropTypes.array,
     disabled: PropTypes.bool,
@@ -29,12 +27,13 @@ class TodoList extends Component {
 }
 
 const RenderChild = ({ props }) => {
-  const { todoList, updateList } = props;
+  const { todoList, openUpsertTodo, updateList } = props;
   if (todoList.length > 0) {
     return todoList.map(item => (
       <Grid item xs={12} key={item.id}>
         <TodoItem
           todo={item}
+          openUpsertTodo={openUpsertTodo}
           updateList={updateList}
         />
       </Grid>
@@ -51,5 +50,3 @@ const RenderChild = ({ props }) => {
     )
   }
 }
-
-export default connect(mapStateToProps('todo'))(TodoList)

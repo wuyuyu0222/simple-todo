@@ -1,32 +1,46 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux';
 import { Paper } from '@material-ui/core';
 
-import { mapStateToProps } from '../../App-Store';
 import LoginForm from './Login-Form';
 import RegisterForm from './Register-Form';
 import './style/Login.scss';
 
-class Login extends Component {
+export default class Login extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      step: 'login'
+    };
+  }
+
+  toLogin = () => {
+    this.setState({ step: 'login' });
+  }
+
+  toRegister = () => {
+    this.setState({ step: 'register' });
+  }
 
   render() {
-    const { step } = this.props;
+    const { step } = this.state;
+    const { login } = this.props;
     return (
       <Paper className="login-block">
-        <RenderChild step={step} />
+        <RenderChild step={step}
+          login={login}
+          toLogin={this.toLogin} toRegister={this.toRegister} />
       </Paper>
     )
   }
 }
 
-const RenderChild = ({ step }) => {
+const RenderChild = ({ step, login, toLogin, toRegister }) => {
   if (step === 'login') {
-    return <LoginForm />
+    return <LoginForm toRegister={toRegister} login={login} />
   } else if (step === 'register') {
-    return <RegisterForm />
+    return <RegisterForm toLogin={toLogin} />
   } else {
     return <></>
   }
 }
-
-export default connect(mapStateToProps('auth'))(Login)
