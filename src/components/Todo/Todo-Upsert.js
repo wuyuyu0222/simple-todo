@@ -1,16 +1,14 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux';
 import { Dialog, Grid, Paper, TextField, Button } from '@material-ui/core';
 import { cloneDeep } from 'lodash';
 
 import TodoService from '../../services/todo/Todo-Service';
-import { mapStateToProps } from '../../App-Store';
-import * as actions from '../../services/todo/Todo-Actions';
+import UtilService from '../../services/utils/Util-Service';
 
-class TodoUpsert extends Component {
+export default class TodoUpsert extends Component {
   constructor(props) {
     super(props);
-    this.state = this.getInitState(props.selectedTodo);
+    this.state = this.getInitState(props.todo);
   }
 
   getInitState = (todo) => {
@@ -31,16 +29,6 @@ class TodoUpsert extends Component {
     };
   }
 
-  componentWillReceiveProps(props) {
-    this.setState({ todo: cloneDeep(props.selectedTodo) })
-  }
-
-  handleCancel = () => {
-    const { selectedTodo, closeUpsertTodo } = this.props;
-    this.setState(this.getInitState(selectedTodo));
-    closeUpsertTodo();
-  }
-
   handleInput = (e) => {
     const { todo, dirty } = this.state;
     const target = e.target.getAttribute('id');
@@ -52,7 +40,7 @@ class TodoUpsert extends Component {
   }
 
   checkValid = (todo) => {
-    const contentValid = this.checkContentValid(todo.content);
+    const contentValid = !UtilService.isEmptyString(todo.content);
     const progressValid = this.checkProgressValid(todo.progress);
     return {
       form: contentValid && progressValid,
@@ -63,10 +51,6 @@ class TodoUpsert extends Component {
 
   checkProgressValid = (progress) => {
     return progress >= 0 && progress <= 100;
-  }
-
-  checkContentValid = (content) => {
-    return content !== '';
   }
 
   handleSubmit = (e) => {
@@ -86,10 +70,10 @@ class TodoUpsert extends Component {
   }
 
   render() {
-    const { isUpsert } = this.props;
+    const { open, closeUpsertTodo } = this.props;
     const { todo, valid, dirty, loading, message } = this.state;
     return (
-      <Dialog open={isUpsert}>
+      <Dialog open={open}>
         <Paper>
           <form className="todo-form" autoComplete="off"
             onSubmit={this.handleSubmit}
@@ -129,7 +113,7 @@ class TodoUpsert extends Component {
                 </div></Grid>
               <Grid item xs={6}>
                 <div className="todo-action">
-                  <Button color="secondary" onClick={this.handleCancel}>CANCEL</Button>
+                  <Button color="secondary" onClick={closeUpsertTodo}>CANCEL</Button>
                   <Button variant="outlined" type="submit"
                     disabled={!valid.form || !dirty.form || loading}>SUBMIT</Button>
                 </div>
@@ -141,12 +125,3 @@ class TodoUpsert extends Component {
     )
   }
 }
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    closeUpsertTodo: () => dispatch(actions.closeUpsertTodo())
-  }
-};
-
-
-export default connect(mapStateToProps('todo'), mapDispatchToProps)(TodoUpsert);

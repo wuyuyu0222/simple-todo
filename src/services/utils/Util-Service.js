@@ -24,7 +24,7 @@ export default class UtilService {
     return fetch(environment.apiUrl + url + queryString).then(res => res.json())
   }
 
-  getQueryString(queryObj) {
+  static getQueryString(queryObj) {
     let queryString = '';
     if (Object.keys(queryObj).length > 0) {
       queryString += '?';

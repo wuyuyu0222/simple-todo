@@ -1,13 +1,10 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux';
 import { Grid, Button, Select, MenuItem } from '@material-ui/core';
 
 import TodoService from '../../services/todo/Todo-Service';
-import { mapStateToProps } from '../../App-Store';
-import * as actions from '../../services/todo/Todo-Actions';
 import Searchbar from '../shared/Searchbar';
 
-class TodoTopbar extends Component {
+export default class TodoTopbar extends Component {
 
   constructor(props) {
     super(props);
@@ -40,7 +37,7 @@ class TodoTopbar extends Component {
   }
 
   render() {
-    const { categoryList, isLoading } = this.props;
+    const { categoryList } = this.props;
     const { category } = this.state;
     const renderItems = categoryList.map((item, idx) => (
       <MenuItem key={idx} value={item}>
@@ -53,7 +50,6 @@ class TodoTopbar extends Component {
           <div className="todo-search">
             <Searchbar
               handleSearch={this.handleSearch}
-              disabled={isLoading}
             />
           </div>
         </Grid>
@@ -62,7 +58,6 @@ class TodoTopbar extends Component {
             <Select id="goto-select" fullWidth
               value={category}
               onChange={this.handleSelect}
-              disabled={isLoading}
             >
               <MenuItem value={'all'}>all category</MenuItem>
               {renderItems}
@@ -72,7 +67,6 @@ class TodoTopbar extends Component {
         <Grid item xs={3}>
           <div className="text-right">
             <Button className="sentence-button" variant='text'
-              disabled={isLoading}
               onClick={this.addTodo}>
               add new todo
             </Button>
@@ -82,11 +76,3 @@ class TodoTopbar extends Component {
     )
   }
 }
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    openUpsertTodo: (todo) => dispatch(actions.openUpsertTodo(todo))
-  }
-};
-
-export default connect(mapStateToProps('todo'), mapDispatchToProps)(TodoTopbar)
