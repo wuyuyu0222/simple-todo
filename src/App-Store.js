@@ -8,10 +8,4 @@ const rootReducer = combineReducers({
   todo: todoReducer
 });
 
-export const mapStateToProps = (type) => {
-  return (state) => {
-    return state[type] ? state[type] : state;
-  }
-}
-
 export const store = createStore(rootReducer);

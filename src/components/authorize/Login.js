@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux';
 import { Paper } from '@material-ui/core';
 
-import { mapStateToProps } from '../../App-Store';
 import LoginForm from './Login-Form';
 import RegisterForm from './Register-Form';
 import './style/Login.scss';
@@ -29,4 +28,4 @@ const RenderChild = ({ step }) => {
   }
 }
 
-export default connect(mapStateToProps('auth'))(Login)
+export default connect((state) => state.auth)(Login)

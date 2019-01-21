@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Grid } from '@material-ui/core';
 
 import TodoService from '../../services/todo/Todo-Service';
-import { mapStateToProps } from '../../App-Store';
 import * as actions from '../../services/todo/Todo-Actions';
 import TodoTopbar from './Todo-Topbar';
 import TodoList from './Todo-List';
@@ -81,4 +80,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps('todo'), mapDispatchToProps)(Todo)
+export default connect((state) => state.todo, mapDispatchToProps)(Todo)

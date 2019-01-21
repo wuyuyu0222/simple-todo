@@ -4,7 +4,6 @@ import { Dialog, Grid, Paper, TextField, Button } from '@material-ui/core';
 import { cloneDeep } from 'lodash';
 
 import TodoService from '../../services/todo/Todo-Service';
-import { mapStateToProps } from '../../App-Store';
 import * as actions from '../../services/todo/Todo-Actions';
 
 class TodoUpsert extends Component {
@@ -149,4 +148,4 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 
-export default connect(mapStateToProps('todo'), mapDispatchToProps)(TodoUpsert);
+export default connect((state) => state.todo, mapDispatchToProps)(TodoUpsert);

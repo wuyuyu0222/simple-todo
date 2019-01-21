@@ -4,7 +4,6 @@ import { AppBar, Button, Grid } from '@material-ui/core';
 import { AccountCircleOutlined } from '@material-ui/icons';
 
 import AuthService from '../../services/authorize/Auth-Service';
-import { mapStateToProps } from '../../App-Store';
 import * as actions from '../../services/authorize/Auth-Actions';
 import './style/layout.scss';
 
@@ -52,4 +51,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps('auth'), mapDispatchToProps)(Topbar)
+export default connect((state) => state.auth, mapDispatchToProps)(Topbar)

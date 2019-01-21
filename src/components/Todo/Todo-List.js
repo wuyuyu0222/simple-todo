@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types'
 import { Grid } from '@material-ui/core';
 
-import { mapStateToProps } from '../../App-Store';
 import TodoItem from './Todo-Item';
 
 class TodoList extends Component {
@@ -52,4 +51,4 @@ const RenderChild = ({ props }) => {
   }
 }
 
-export default connect(mapStateToProps('todo'))(TodoList)
+export default connect((state) => state.todo)(TodoList)

@@ -4,7 +4,6 @@ import { Grid, TextField, Button } from '@material-ui/core';
 
 import UtilService from '../../services/utils/Util-Service';
 import AuthService from '../../services/authorize/Auth-Service';
-import { mapStateToProps } from '../../App-Store';
 import * as actions from '../../services/authorize/Auth-Actions';
 
 class RegisterForm extends Component {
@@ -182,4 +181,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 };
 
-export default connect(mapStateToProps('auth'), mapDispatchToProps)(RegisterForm)
+export default connect((state) => state.auth, mapDispatchToProps)(RegisterForm)

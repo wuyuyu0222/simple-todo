@@ -4,7 +4,6 @@ import { PropTypes } from 'prop-types';
 import { Paper, Button, LinearProgress } from '@material-ui/core';
 
 import TodoService from '../../services/todo/Todo-Service';
-import { mapStateToProps } from '../../App-Store';
 import * as actions from '../../services/todo/Todo-Actions';
 import DefaultDialog from '../shared/Default-Dialog';
 
@@ -98,4 +97,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps('todo'), mapDispatchToProps)(TodoItem)
+export default connect((state) => state.todo, mapDispatchToProps)(TodoItem)

@@ -1,7 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux';
 
-import { mapStateToProps } from '../../App-Store';
 import Topbar from './Topbar';
 import Todo from '../todo/Todo';
 import Login from '../authorize/Login';
@@ -29,4 +28,4 @@ const RenderChild = ({ isAuthorized }) => {
   }
 }
 
-export default connect(mapStateToProps('auth'))(Container)
+export default connect((state) => state.auth)(Container)
