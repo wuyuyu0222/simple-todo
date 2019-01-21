@@ -1,4 +1,5 @@
-import { from } from 'rxjs';
+import { ajax } from 'rxjs/ajax';
+
 import { environment } from '../../environment';
 
 export default class UtilService {
@@ -17,9 +18,7 @@ export default class UtilService {
 
   static getData(url, queryObj) {
     const queryString = this.getQueryString(queryObj);
-    return from(
-      fetch(environment.apiUrl + url + queryString).then(res => res.json())
-    )
+    return ajax.getJSON(environment.apiUrl + url + queryString);
   }
 
   static getQueryString(queryObj) {
@@ -38,20 +37,12 @@ export default class UtilService {
   }
 
   static upsertData(url, data) {
-    return from(
-      fetch(environment.apiUrl + url, {
-        method: 'POST',
-        body: JSON.stringify(data)
-      }).then(res => res.json())
-    )
+    return ajax.post(environment.apiUrl + url,
+      JSON.stringify(data));
   }
 
   static deleteData(url, id) {
-    return from(
-      fetch(environment.apiUrl + url + `/${id}`, {
-        method: 'DELETE'
-      }).then(res => res.json())
-    )
+    return ajax.delete(environment.apiUrl + url + `/${id}`);
   }
 
 }
