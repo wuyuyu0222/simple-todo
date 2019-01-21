@@ -74,7 +74,7 @@ class TodoUpsert extends Component {
     const { updateList, closeUpsertTodo } = this.props;
     const { todo } = this.state;
     this.setState({ loading: true, message: '' });
-    TodoService.upsertTodo(todo).then(res => {
+    TodoService.upsertTodo(todo).subscribe(res => {
       this.setState({ loading: false, message: 'submit success' });
       setTimeout(() => {
         updateList();

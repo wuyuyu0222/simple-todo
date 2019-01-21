@@ -1,3 +1,5 @@
+import { Observable } from 'rxjs';
+
 import UtilService from "../utils/Util-Service";
 
 export default class AuthService {
@@ -8,33 +10,36 @@ export default class AuthService {
   }
 
   static login(account, password) {
-    return new Promise((resolve, reject) => {
+    return Observable.create(observer => {
       if (account && password) {
         const username = 'jakeWu';
         localStorage.setItem('user', username);
         localStorage.setItem('tempAccount', account);
-        resolve({ account, username });
+        observer.next({ account, username })
       } else {
-        reject();
+        observer.error('')
       }
+      observer.complete();
     });
   }
 
   static logout() {
-    return new Promise((resolve, reject) => {
+    return Observable.create(observer => {
       localStorage.removeItem('user');
-      resolve();
-    });
+      observer.next();
+      observer.complete();
+    })
   }
 
   static register(username, account, password) {
-    return new Promise((resolve, reject) => {
+    return Observable.create(observer => {
       if (username && account && password) {
         localStorage.setItem('tempAccount', account);
-        resolve(account);
+        observer.next();
       } else {
-        reject();
+        observer.error('');
       }
-    });
+      observer.complete();
+    })
   }
 }

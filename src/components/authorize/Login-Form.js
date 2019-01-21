@@ -68,7 +68,7 @@ class LoginForm extends Component {
     const { loginSuccess } = this.props;
     e.preventDefault();
     this.setState({ loading: true });
-    AuthService.login(account, password).then(res => {
+    AuthService.login(account, password).subscribe(res => {
       loginSuccess(res);
     })
   }

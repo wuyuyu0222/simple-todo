@@ -1,3 +1,5 @@
+import { map } from 'rxjs/operators';
+
 import UtilService from "../utils/Util-Service";
 
 export default class TodoService {
@@ -14,22 +16,27 @@ export default class TodoService {
     }
   }
 
-  static getTodoList() {
-    return UtilService.getData(this.apiUrl).then(res => {
-      res.map(todo => todo.progress = +todo.progress);
-      return this.getSortTodoList(res);
-    });
-  }
-
-  static searchTodo(keyword, category) {
+  static getTodoList(keyword, category) {
     const query = {
       keyword: keyword,
       category: category === 'all' ? '' : category
     };
-    return UtilService.searchData(this.apiUrl, query).then(res => {
-      res.map(todo => todo.progress = +todo.progress);
-      return this.getSortTodoList(res);
-    })
+    return UtilService.getData(this.apiUrl, query).pipe(
+      map(todoList => {
+        todoList.map(todo => todo.progress = +todo.progress);
+        return this.getSortTodoList(todoList);
+      })
+    );
+  }
+
+  static getCategoryList() {
+    return UtilService.getData(this.apiUrl).pipe(
+      map(todoList =>
+        UtilService.getDistinctArray(
+          todoList.map(todo => todo.category)
+        )
+      )
+    );
   }
 
   static getSortTodoList(todoList) {

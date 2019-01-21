@@ -104,7 +104,7 @@ class RegisterForm extends Component {
     const { registerSuccess } = this.props;
     e.preventDefault();
     this.setState({ loading: true });
-    AuthService.register(username, account, password).then(res => {
+    AuthService.register(username, account, password).subscribe(res => {
       registerSuccess(res);
     });
   }

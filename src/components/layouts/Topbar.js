@@ -14,7 +14,7 @@ class Topbar extends Component {
 
   logout = () => {
     const { logout } = this.props;
-    AuthService.logout().then(res => {
+    AuthService.logout().subscribe(res => {
       logout();
     });
   }

@@ -2,7 +2,6 @@ import React, { Component, lazy } from 'react'
 import { connect } from 'react-redux';
 import { Grid } from '@material-ui/core';
 
-import UtilService from '../../services/utils/Util-Service';
 import TodoService from '../../services/todo/Todo-Service';
 import { mapStateToProps } from '../../App-Store';
 import * as actions from '../../services/todo/Todo-Actions';
@@ -27,28 +26,25 @@ class Todo extends Component {
   updateList = () => {
     const { loading, keyword, category } = this.props;
     loading();
-    const isSearchMode = keyword || category;
-    if (isSearchMode) {
-      this.searchTodo(keyword, category);
-    } else {
-      this.getTodoList();
+    const isSearchMode = keyword || category !== 'all';
+    this.getTodoList(keyword, category);
+    if (!isSearchMode) {
+      this.getCategoryList();
     }
   }
 
-  getTodoList = () => {
-    const { updateTodoList, updateCategoryList } = this.props;
-    TodoService.getTodoList().then(res => {
-      const categoryList = UtilService.getDistinctArray(res.map(todo => todo.category));
+  getTodoList = (keyword, category) => {
+    const { updateTodoList } = this.props;
+    TodoService.getTodoList(keyword, category).subscribe(res => {
       updateTodoList(res);
-      updateCategoryList(categoryList);
     });
   }
 
-  searchTodo = (keyword, category) => {
-    const { updateTodoList } = this.props;
-    TodoService.searchTodo(keyword, category).then(res => {
-      updateTodoList(res);
-    })
+  getCategoryList = () => {
+    const { updateCategoryList } = this.props;
+    TodoService.getCategoryList().subscribe(res => {
+      updateCategoryList(res);
+    });
   }
 
   render() {
@@ -57,7 +53,7 @@ class Todo extends Component {
         <Grid container spacing={16}>
           <Grid item xs={12}>
             <TodoTopbar
-              searchTodo={this.searchTodo}
+              searchTodo={this.getTodoList}
             />
           </Grid>
           <Grid item xs={12}>

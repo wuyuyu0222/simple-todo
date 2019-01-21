@@ -39,7 +39,7 @@ class TodoItem extends Component {
   handleDelete = () => {
     const { loading, todo, updateList } = this.props;
     loading();
-    TodoService.deleteTodo(todo.id).then(res => {
+    TodoService.deleteTodo(todo.id).subscribe(res => {
       this.closeDeleteDialog();
       updateList();
     })
